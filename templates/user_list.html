@@ -2,117 +2,41 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>User list</title>
+    <title>Case list</title>
+<script>
+// Ajax로 수정
+var xhr;
 
-    {% block scripts %}
-        <script>
-
-        function getCookie(name) {
-            var cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                var cookies = document.cookie.split(';');
-                for (var i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    // Does this cookie string begin with the name we want?
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
+function putCase(elem) {   
+    console.log("확인1")
+    var pid = parseInt(elem.getAttribute('pid'));
+    console.log(pid)
+    var cmt = document.getElementById('cmt_'+pid).value;  
+    console.log(cmt)
+    var data = new FormData();
+    data.append('p_id', pid);
+    data.append('p_cmt', cmt);
+    
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                console.log(response.result_msg);
+                // Handle the response as needed
+            } else {
+                console.error('Error:', xhr.status);
+                // Handle the error response
             }
-            return cookieValue;
         }
-        var csrftoken = getCookie('csrftoken');
-
-        var xhr;
-
-        // Ajax로 등록
-        function postUser() {
-
-            var uname = document.getElementById('username_').value;
-            var uage = parseInt(document.getElementById('userage_').value);
-
-            var data = { id: 0, name: uname, age: uage };
-            var jsonstr = JSON.stringify(data);
-
-            //alert(jsonstr);
-            //return false;
-
-            xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == 4) {
-                    var data = xhr.responseText;
-                    var obj = JSON.parse(data);
-
-                    var node = document.createElement("DIV");
-                    var textnode = document.createTextNode(uname + " - " + uage + " added...");
-                    node.appendChild(textnode);
-                    document.getElementById("usertable").appendChild(node);
-
-                    //alert(obj.name + " registered...");
-                }
-            };
-            xhr.open("POST", "/users");
-            xhr.setRequestHeader("X-CSRFToken", csrftoken);
-            xhr.send(jsonstr);
-        }
-
-        // Ajax로 수정
-        function putUser(elem) {
-
-            var userid = parseInt(elem.getAttribute('userid'));
-            var uname = document.getElementById('username_'+userid).value;
-            var uage = parseInt(document.getElementById('userage_'+userid).value);
-
-            var data = { id: userid, name: uname, age: uage }
-            var jsonstr = JSON.stringify(data);
-
-            //alert(jsonstr);
-            //return false;
-
-            xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == 4) {
-                    var data = xhr.responseText;
-                    var obj = JSON.parse(data);
-                    //alert(uname + " modified...");
-                    document.getElementById('username_'+userid).style.color = "#FF6600";
-                    document.getElementById('userage_'+userid).style.color = "#FF6600";
-                }
-            };
-            xhr.open("PUT", "/users");
-            xhr.setRequestHeader("X-CSRFToken", csrftoken);
-            xhr.send(jsonstr);
-        }
+    };
+    
+    xhr.open("PUT", "/cases");
+    xhr.send(data);
+}
 
 
-        // Ajax로 삭제
-        function deleteUser(userid) {
-
-            if (confirm("삭제 하시겠습니까?") == false) {
-                return false;
-            }
-
-            var data = { id: userid, name: '', age: 0 }
-            var jsonstr = JSON.stringify(data);
-
-            xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == 4) {
-                    var data = xhr.responseText;
-                    var obj = JSON.parse(data);
-
-                    document.getElementById('userbox_'+userid).remove();
-                    //alert(obj.result_msg);
-                }
-            };
-            xhr.open("DELETE", "/users");
-            xhr.setRequestHeader("X-CSRFToken", csrftoken);
-            xhr.send(jsonstr);
-        }
-
-    </script>
-{% endblock %}
+</script>   
 </head>
 <body>
 
@@ -120,23 +44,36 @@
         <a href="/">HOME</a>
     </div>
 
-    <h1 style="padding:10px;">User list</h1>
+    <h1 style="padding:10px;">Caselist</h1>
     <div style="margin:20px 0">
-        <input type="text" id="username_" value="사용자" />
-        <input type="text" id="userage_" value="1" />
-        <button onclick="postUser()">등록</button>
+        <input type="text" id="username_" value="환자아이디" />
+        
+        <button onclick="postUser()">추가하기</button>
     </div>
-    <div  id="usertable">
+    <div  id="casetable">
     <table width="100%" border="1" cellpadding="0" cellspacing="0">
-    {% if users %}
-        {% for user in users %}
-        <tr style="padding:10px;height:45px;" id="userbox_{{user.id}}">
-            <td align="center">{{user.id}}</td>
-            <td align="center"><input type="text" id="username_{{user.id}}" value="{{user.name}}" /></td>
-            <td align="center"><input type="text" id="userage_{{user.id}}" value="{{user.age}}" /></td>
-            <td align="center"><a href="/users/{{user.id}}"><button>보기</button></a></td>
-            <td align="center"><button userid="{{user.id}}" onclick="putUser(this)">수정</button></td>
-            <td align="center"><button onclick="deleteUser({{user.id}})">삭제</button></td>
+        <tr>
+            <th>환자아이디</th>
+            <th>LF점수</th>
+            <th>SOFA점수</th>
+            <th>MEWS점수</th>
+            <th>코멘트</th>
+            <th>자세히보기</th>
+            <!--<th>수정</th>-->
+            <th>삭제</th>
+        </tr>
+    {% if cases %}
+        {% for case in cases %}
+        <tr style="padding:10px;height:45px;" id="casebox_{{case.u_id}}">
+            <td align="center" id="pid_{{case.p_id}}">{{case.p_id}}</td>
+            <td align="center">{{case.p_score}}</td>
+            <td align="center">{{case.p_SOFA}}</td>
+            <td align="center">{{case.p_MEWS}}</td>
+            <td align="center"><input type="text" id="cmt_{{case.pid}}" value="{{case.p_cmt}}">
+                <button pid= "{{case.p_id}}" onclick="putCase(this)">추가</button></a></td>
+            <td align="center"><a href="/cases/{{case.p_id}}"><button>보기</button></a></td>
+            <!--<td align="center"><button userid="{{case.p_id}}" onclick="putUser(this)">수정</button></td>-->
+            <td align="center"><button onclick="deleteUser({{case.p_id}})">삭제</button></td>
         </tr>
         {% endfor %}
     {% else %}

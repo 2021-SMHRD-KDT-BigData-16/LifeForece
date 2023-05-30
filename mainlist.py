@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
@@ -6,7 +6,7 @@ from typing import List
 from starlette.middleware.cors import CORSMiddleware
 
 from db import session
-from model import UserTable, User
+from model import CaseTable, Case, CaseVital, Vital
 
 import json
 
@@ -25,81 +25,107 @@ app.add_middleware(
 
 @app.get("/")
 async def root():
-    return {"message": "/users 에서 사용자관리"}
+    return {"message": "/cases 에서 사용자관리"}
 
 
 # ----------API 정의------------
-@app.get("/users", response_class=HTMLResponse)
-async def read_users(request: Request):
-    print("read_users >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+@app.get("/cases", response_class=HTMLResponse)
+async def read_cases(request: Request):
+    
     context = {}
 
-    users = session.query(UserTable).all()
+    cases = session.query(CaseTable).limit(10).all()
 
     context['request'] = request
-    context['users'] = users
+    context['cases'] = cases
 
     return templates.TemplateResponse("user_list.html", context)
 
 
-@app.get("/users/{user_id}", response_class=HTMLResponse)
-async def read_user(request: Request, user_id: int):
-    print("read_user >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    context = {}
+@app.get("/cases/{case_id}", response_class=HTMLResponse)
+async def read_case(request: Request, case_id: int, page: int =1, rows_per_page: int=10):
+    context = {}    
+    case = session.query(CaseTable).filter(CaseTable.p_id == case_id).first()
+    context['case'] = case
+    vitals_query = session.query(CaseVital).filter(CaseVital.p_id == case_id)
 
-    user = session.query(UserTable).filter(UserTable.id == user_id).first()
-    print(user.name)
-    context['name'] = user.name
-    context['age'] = user.age
+    start_index = (page - 1) * rows_per_page
+    end_index = start_index + rows_per_page
+    # Calculate the total number of rows
+    total_rows = vitals_query.count()
+    
+    # Calculate the total number of pages
+    total_pages = (total_rows + rows_per_page - 1) // rows_per_page
+    
+
+    vitals = vitals_query.offset((page - 1) * rows_per_page).limit(rows_per_page).all()
+    
+    context['vitals']= vitals
     context['request'] = request
+    context['page'] = page
+    context['rows_per_page'] = rows_per_page
+    context['total_pages'] = total_pages
 
     return templates.TemplateResponse("user_detail.html", context)
 
 
-@app.post("/users")
-async def create_user(users: User):
-    print("create_user >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+@app.post("/cases")
+async def create_case(cases: Case):
+    
     # data = await request.json()
+    #caselist = list(cases)
+    #caselist[0][1]
+    #caselist[1][1]
 
-    userlist = list(users)
-    uname = userlist[1][1]
-    uage = userlist[2][1]
+    # 환자번호 입력하면 넣는 작업 필요
+    # 점수가져와서 넣는 작업 필요
+    u_id = "x"
+    p_id = "1225"
+    
+    case = CaseTable()
+    case.u_id = u_id
+    case.p_id = p_id
+    
 
-    user = UserTable()
-    user.name = uname
-    user.age = uage
-
-    session.add(user)
+    session.add(case)
     session.commit()
 
-    return { 'result_msg': f'{uname} Registered...' }
+    return { 'result_msg': f'{p_id} Registered...' }
 
 
-@app.put("/users")
-async def modify_users(users: User):
-    print("modify_user >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+@app.put("/cases")
+async def modify_cases(cases: Case, p_cmt: str = Form(...)):
+    #async def modify_cases(p_id: int = Form(...), p_cmt: str = Form(...)):
+    #점수변화 확인하려면 # 풀어주기
+    #현재는 cmt 만 수정할 수 있도록 해줬음
 
-    userlist = list(users)
-    uid = userlist[0][1]
-    uname = userlist[1][1]
-    uage = userlist[2][1]
+    caselist = list(cases)   
+    ##u_id = caselist[0][1]
+    p_id = caselist[1][1]
+    ##p_score = caselist[2][1]
+    ##p_SOFA = caselist[3][1]
+    ##p_MEWS = caselist[4][1]
+    #p_cmt = caselist[5][1]
 
-    user = session.query(UserTable).filter(UserTable.id == uid).first()
-    user.name = uname
-    user.age = uage
+    case = session.query(CaseTable).filter(CaseTable.p_id == p_id).first()
+    #case.u_id = u_id
+    #case.p_id = p_id
+    #case.p_score = p_score
+    #case.p_SOFA = p_SOFA
+    #case.p_MEWS = p_MEWS
+    case.p_cmt = p_cmt
     session.commit()
 
-    return { 'result_msg': f"{uname} updated..." }
+    return { 'result_msg': f"{p_id} updated..." }
 
 
-@app.delete("/users")
-async def delete_users(users: User):
-    print("delete_user >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+@app.delete("/cases")
+async def delete_cases(cases: Case):    
 
-    userlist = list(users)
-    uid = userlist[0][1]
+    caselist = list(cases)
+    p_id = caselist[1][1]
 
-    user = session.query(UserTable).filter(UserTable.id == uid).delete()
+    cases = session.query(CaseTable).filter(CaseTable.p_id == p_id).delete()
     session.commit()
 
     return {'result_msg': f"User deleted..."}
