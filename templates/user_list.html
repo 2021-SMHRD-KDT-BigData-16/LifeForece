@@ -7,36 +7,30 @@
 // Ajax로 수정
 var xhr;
 
-function putCase(elem) {   
-    console.log("확인1")
-    var pid = parseInt(elem.getAttribute('pid'));
-    console.log(pid)
-    var cmt = document.getElementById('cmt_'+pid).value;  
-    console.log(cmt)
-    var data = new FormData();
-    data.append('p_id', pid);
-    data.append('p_cmt', cmt);
+function putCase(pId) {   
+   
+    var comment = document.getElementById(`cmt_${pId}`).value;  
+    console.log(comment)
     
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200) {
-                var response = JSON.parse(xhr.responseText);
-                console.log(response.result_msg);
-                // Handle the response as needed
-            } else {
-                console.error('Error:', xhr.status);
-                // Handle the error response
-            }
-        }
-    };
-    
-    xhr.open("PUT", "/cases");
-    xhr.send(data);
+    fetch('/cases', {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: `p_id=${pId}&p_cmt=${encodeURIComponent(comment)}`,
+  })
+    .then(response => response.json())
+    .then(data => {
+      // Handle the response from the backend
+      console.log(data.result_msg);
+      // Update the input value with the updated comment
+      
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
 }
-
-
-</script>   
+</script> 
 </head>
 <body>
 
@@ -58,8 +52,8 @@ function putCase(elem) {
             <th>SOFA점수</th>
             <th>MEWS점수</th>
             <th>코멘트</th>
+            <th>추가</th>
             <th>자세히보기</th>
-            <!--<th>수정</th>-->
             <th>삭제</th>
         </tr>
     {% if cases %}
@@ -69,8 +63,11 @@ function putCase(elem) {
             <td align="center">{{case.p_score}}</td>
             <td align="center">{{case.p_SOFA}}</td>
             <td align="center">{{case.p_MEWS}}</td>
-            <td align="center"><input type="text" id="cmt_{{case.pid}}" value="{{case.p_cmt}}">
-                <button pid= "{{case.p_id}}" onclick="putCase(this)">추가</button></a></td>
+            <td align="center"><input type="text" id="cmt_{{case.p_id}}" value="{{case.p_cmt}}"></td>
+            <td align="center"><button onclick="putCase('{{case.p_id}}')">cmt</button></td>
+
+
+
             <td align="center"><a href="/cases/{{case.p_id}}"><button>보기</button></a></td>
             <!--<td align="center"><button userid="{{case.p_id}}" onclick="putUser(this)">수정</button></td>-->
             <td align="center"><button onclick="deleteUser({{case.p_id}})">삭제</button></td>
