@@ -3,12 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <title>Case list</title>
+<!--<script type="module" src="your-script.js"></script>-->
 <script>
-// Ajax로 수정
+
 var xhr;
 
-function putCase(pId) {   
-   
+function postCase() {
+
+  var patientId = document.getElementById("newcase").value;
+  console.log(patientId)
+// Make a POST request to the backend to create a new row in CaseTable
+  // fetch("/cases1", {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json"
+  //   },
+  //   body: JSON.stringify({
+  //     p_id: patientId
+  //   })
+  // })
+  // .then(response => response.json())
+  // .then(data => {
+  //   // Handle the response data
+  //   console.log(data);
+  //   // Perform any necessary actions with the response
+  // })
+  // .catch(error => {
+  //   // Handle errors
+  //   console.error(error);
+  // });      
+  
+  const data = {
+    id: patientId, 
+  };
+
+  fetch("/cases1", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({id: patientId}),
+    }) 
+    .then(response => response.json())
+    .then(data => {
+      // Handle the response data
+      console.log(data);
+      // Perform any necessary actions with the response
+     })
+  .catch(error => {
+      // Handle errors
+      console.error(error);
+  });  
+
+}
+
+
+function putCase(pId) {      
     var comment = document.getElementById(`cmt_${pId}`).value;  
     console.log(comment)
     
@@ -30,7 +80,31 @@ function putCase(pId) {
       console.error('Error:', error);
     });
 }
+
+function delCase(pId) {    
+  if (confirm('삭제하시겠습니까?')) {
+    fetch(`/cases?p_id=${pId}`, {
+      method: 'DELETE',
+    })
+      .then(response => response.json())
+      .then(data => {
+        // Handle the response from the backend
+        console.log(data.result_msg);
+        // Remove the row from the table
+        const caseRow = document.getElementById(`casebox_${pId}`);
+        if (caseRow) {
+          caseRow.parentNode.removeChild(caseRow);
+        }        
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }
+}
 </script> 
+
+
+
 </head>
 <body>
 
@@ -40,9 +114,8 @@ function putCase(pId) {
 
     <h1 style="padding:10px;">Caselist</h1>
     <div style="margin:20px 0">
-        <input type="text" id="username_" value="환자아이디" />
-        
-        <button onclick="postUser()">추가하기</button>
+        <input type="text" id="newcase" placeholder="환자아이디"/>        
+        <button onclick="postCase()">추가하기</button>
     </div>
     <div  id="casetable">
     <table width="100%" border="1" cellpadding="0" cellspacing="0">
@@ -56,27 +129,24 @@ function putCase(pId) {
             <th>자세히보기</th>
             <th>삭제</th>
         </tr>
-    {% if cases %}
-        {% for case in cases %}
-        <tr style="padding:10px;height:45px;" id="casebox_{{case.u_id}}">
-            <td align="center" id="pid_{{case.p_id}}">{{case.p_id}}</td>
-            <td align="center">{{case.p_score}}</td>
-            <td align="center">{{case.p_SOFA}}</td>
-            <td align="center">{{case.p_MEWS}}</td>
-            <td align="center"><input type="text" id="cmt_{{case.p_id}}" value="{{case.p_cmt}}"></td>
-            <td align="center"><button onclick="putCase('{{case.p_id}}')">cmt</button></td>
-
-
-
-            <td align="center"><a href="/cases/{{case.p_id}}"><button>보기</button></a></td>
-            <!--<td align="center"><button userid="{{case.p_id}}" onclick="putUser(this)">수정</button></td>-->
-            <td align="center"><button onclick="deleteUser({{case.p_id}})">삭제</button></td>
+    
+    {% if cases %}        
+    {% for case in cases %}
+    <tr style="padding:10px;height:45px;" id="casebox_{{case.u_id}}">
+        <td align="center" id="pid_{{case.p_id}}">{{case.p_id}}</td>
+        <td align="center">{{case.p_score}}</td>
+        <td align="center">{{case.p_SOFA}}</td>
+        <td align="center">{{case.p_MEWS}}</td>
+        <td align="center"><input type="text" id="cmt_{{case.p_id}}" value="{{case.p_cmt}}"></td>
+        <td align="center"><button onclick="putCase('{{case.p_id}}')">cmt</button></td>
+        <td align="center"><a href="/cases/{{case.p_id}}"><button>보기</button></a></td>
+        <td align="center"><button onclick="delCase('{{case.p_id}}')">삭제</button></td>
         </tr>
         {% endfor %}
     {% else %}
         <tr style="padding:10px;border-top:solid 1px #3388cc;">
             <td>
-            No user...
+            No case...
             </td>
         </tr>
     {% endif %}

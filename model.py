@@ -10,32 +10,31 @@ from db import engine
 class CaseTable(Base):
     __tablename__ = 'caseinfo'
     u_id = Column(String(45), primary_key=True)
-    p_id = Column(Integer, primary_key=True)
+    p_id = Column(Float, primary_key=True)
     p_score = Column(Float, nullable=True)
     p_SOFA = Column(Float, nullable=True)
     p_MEWS = Column(Float, nullable=True)
     p_cmt = Column(String(45), nullable=True)
-
     
 
 class Case(BaseModel):
     u_id   : str
-    p_id : int
+    p_id : float
     p_score  : float
     p_SOFA : float
     p_MEWS : float
     p_cmt :  str
     
-
+#p_id = Column(Float,ForeignKey('caseinfo.p_id', name="fk_casevital_caseinfo_u_id", ondelete='CASCADE'))
 
 class CaseVital(Base):
     __tablename__ = 'casevital'
     v_sequence = Column(Integer, primary_key=True, autoincrement=True)
-    p_id = Column(Integer,ForeignKey('caseinfo.p_id', name="fk_casevital_caseinfo_u_id", ondelete='CASCADE'))
+    p_id = Column(Float,nullable=False)
     rec_time = Column(String(45), nullable=True)
-    age = Column(Integer, nullable=True)
-    Gender = Column(Integer, nullable=True)
-    ICUtype = Column(Integer, nullable=True)
+    age = Column(Float, nullable=True)
+    Gender = Column(Float, nullable=True)
+    ICUtype = Column(Float, nullable=True)
     ALP = Column(Float, nullable=True)
     ALT = Column(Float, nullable=True)
     AST = Column(Float, nullable=True)
@@ -60,7 +59,7 @@ class CaseVital(Base):
     RR = Column(Float, nullable=True)
     SPO2 = Column(Float, nullable=True)
     BT = Column(Float, nullable=True)
-    Tropl = Column(Float, nullable=True)
+    TroponinI = Column(Float, nullable=True)
     TroponinT = Column(Float, nullable=True)
     Urine = Column(Float, nullable=True)
     WBC = Column(Float, nullable=True)
@@ -69,19 +68,18 @@ class CaseVital(Base):
     SBP = Column(Float, nullable=True)
     DBP = Column(Float, nullable=True)
     MBP = Column(Float, nullable=True)
-    male = Column(Integer, nullable=True)
-    female = Column(Integer, nullable=True)
-    u_id = Column(String(45), ForeignKey('caseinfo.p_id', name="fk_casevital_caseinfo_p_id"), nullable=False)
+    male = Column(Float, nullable=True)
+    female = Column(Float, nullable=True)    
 
     
 
 class Vital(BaseModel):
     v_sequence: int
-    p_id: int
+    p_id: float
     rec_time: str
-    age: int
-    Gender: int
-    ICUtype: int
+    age: float
+    Gender: float
+    ICUtype: float
     ALP: float
     ALT: float
     AST: float
@@ -106,7 +104,7 @@ class Vital(BaseModel):
     RR: float
     SPO2: float
     BT: float
-    Tropl: float
+    TroponinI: float
     TroponinT: float
     Urine: float
     WBC: float
@@ -115,9 +113,8 @@ class Vital(BaseModel):
     SBP: float
     DBP: float
     MBP: float
-    male: int
-    female: int
-    u_id: str
+    male: float
+    female: float  
 
 #class UserTable(Base):
 #    __tablename__ = 'user'

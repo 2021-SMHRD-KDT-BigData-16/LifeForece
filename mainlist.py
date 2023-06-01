@@ -28,22 +28,21 @@ async def root():
     return {"message": "/cases 에서 사용자관리"}
 
 
-# ----------API 정의------------
+# ----------casetable에 있는 환자 점수 목록 가져오기------------
 @app.get("/cases", response_class=HTMLResponse)
 async def read_cases(request: Request):
     
     context = {}
 
-    cases = session.query(CaseTable).limit(10).all()
-
+    cases = session.query(CaseTable).all()    
     context['request'] = request
     context['cases'] = cases
 
     return templates.TemplateResponse("user_list.html", context)
 
-
+# ------환자 점수 목록에서 클릭시 환자의 casevital에 있는 값을 다른페이지에 가져오기----
 @app.get("/cases/{case_id}", response_class=HTMLResponse)
-async def read_case(request: Request, case_id: int, page: int =1, rows_per_page: int=10):
+async def read_case(request: Request, case_id: float, page: int =1, rows_per_page: int=10):
     context = {}    
     case = session.query(CaseTable).filter(CaseTable.p_id == case_id).first()
     context['case'] = case
@@ -55,9 +54,7 @@ async def read_case(request: Request, case_id: int, page: int =1, rows_per_page:
     total_rows = vitals_query.count()
     
     # Calculate the total number of pages
-    total_pages = (total_rows + rows_per_page - 1) // rows_per_page
-    
-
+    total_pages = (total_rows + rows_per_page - 1) // rows_per_page  
     vitals = vitals_query.offset((page - 1) * rows_per_page).limit(rows_per_page).all()
     
     context['vitals']= vitals
@@ -68,51 +65,76 @@ async def read_case(request: Request, case_id: int, page: int =1, rows_per_page:
 
     return templates.TemplateResponse("user_detail.html", context)
 
-
-@app.post("/cases")
-async def create_case(cases: Case):
+# ------ 환자 아이디를 입력하면 그 환자의 casevital값을 가져와서 함수에 넣어야함---
+# @app.get("/cases/{new_case}")   
+# async def read_case(new_case: float):
     
-    # data = await request.json()
-    #caselist = list(cases)
-    #caselist[0][1]
-    #caselist[1][1]
+#     return {"message":"Case values retrieved successively"}
 
-    # 환자번호 입력하면 넣는 작업 필요
+# @app.post("/process")
+# async def process_dataframe(request: Request):
+#     dataframe = await request.form()
+#     dataframe_value = dataframe["dataframe"]
+    
+#     # Convert the JSON dataframe value to a pandas DataFrame
+#     import pandas as pd
+#     df = pd.read_json(dataframe_value)
+
+#     # Process the DataFrame as needed
+#     # ...
+
+#     return {"message": "DataFrame processed successfully"}
+
+from pydantic import BaseModel
+
+class MyData(BaseModel):
+    id: str
+
+@app.post("/cases1")
+async def create_case(data: MyData):
+    print(data.id)
+
+    # 아이디로 DB 검색
+
+    # 계산
+
+    # 계산 값을 DB에 저장
+
+    # 원래 페이지로 이동
+   
+
+
     # 점수가져와서 넣는 작업 필요
-    u_id = "x"
-    p_id = "1225"
-    
-    case = CaseTable()
-    case.u_id = u_id
-    case.p_id = p_id
-    
+    # u_id = "a"
+    # # p_id = "1225"    
+    # case = CaseTable()
+    # case.u_id = u_id
+    # case.p_id = cases.p_id          
 
-    session.add(case)
-    session.commit()
-
-    return { 'result_msg': f'{p_id} Registered...' }
+    # session.add(case)
 
 
+
+
+    # session.commit()
+
+    return {'result_msg': ' Registered...' }
+
+#-------- 환자에 대한 코멘트 수정하기----------
 @app.put("/cases")
-async def modify_cases(p_id: int = Form(...), p_cmt: str = Form(...)):
+async def modify_cases(p_id: float = Form(...), p_cmt: str = Form(...)):
     #async def modify_cases(p_id: int = Form(...), p_cmt: str = Form(...)):
     #점수변화 확인하려면 # 풀어주기
     #현재는 cmt 만 수정할 수 있도록 해줬음
 
     #caselist = list(cases)   
-    ##u_id = caselist[0][1]
-    #p_id = caselist[1][1]
-    ##p_score = caselist[2][1]
-    ##p_SOFA = caselist[3][1]
-    ##p_MEWS = caselist[4][1]
-    #p_cmt = caselist[5][1]
-
+    #u_id = caselist[0][1]
+    #p_id = caselist[1][1]...
+   
     case = session.query(CaseTable).filter(CaseTable.p_id == p_id).first()
     #case.u_id = u_id
-    #case.p_id = p_id
-    #case.p_score = p_score
-    #case.p_SOFA = p_SOFA
-    #case.p_MEWS = p_MEWS
+    #case.p_id = p_id..
+  
     case.p_cmt = p_cmt
     session.commit()
 
@@ -120,12 +142,9 @@ async def modify_cases(p_id: int = Form(...), p_cmt: str = Form(...)):
 
 
 @app.delete("/cases")
-async def delete_cases(cases: Case):    
+async def delete_cases(p_id: float = Form(...)):   
 
-    caselist = list(cases)
-    p_id = caselist[1][1]
-
-    cases = session.query(CaseTable).filter(CaseTable.p_id == p_id).delete()
+    case=session.query(CaseTable).filter(CaseTable.p_id == p_id).delete()
     session.commit()
 
     return {'result_msg': f"User deleted..."}
