@@ -94,14 +94,14 @@ async def create_case(cases: Case):
 
 
 @app.put("/cases")
-async def modify_cases(cases: Case, p_cmt: str = Form(...)):
+async def modify_cases(p_id: int = Form(...), p_cmt: str = Form(...)):
     #async def modify_cases(p_id: int = Form(...), p_cmt: str = Form(...)):
     #점수변화 확인하려면 # 풀어주기
     #현재는 cmt 만 수정할 수 있도록 해줬음
 
-    caselist = list(cases)   
+    #caselist = list(cases)   
     ##u_id = caselist[0][1]
-    p_id = caselist[1][1]
+    #p_id = caselist[1][1]
     ##p_score = caselist[2][1]
     ##p_SOFA = caselist[3][1]
     ##p_MEWS = caselist[4][1]
@@ -129,3 +129,4 @@ async def delete_cases(cases: Case):
     session.commit()
 
     return {'result_msg': f"User deleted..."}
+
