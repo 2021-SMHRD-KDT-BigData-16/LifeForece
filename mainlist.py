@@ -7,7 +7,7 @@ from starlette.middleware.cors import CORSMiddleware
 
 from db import session
 from model import CaseTable, Case, CaseVital, Vital
-
+import pandas as pd
 import json
 from pydantic import BaseModel
 
@@ -98,11 +98,13 @@ async def create_case(data: MyData):
     context = {}        
     vitals = session.query(CaseVital).filter(CaseVital.p_id == data.id)
     context['vitals']= vitals
-    print(vitals)
-    print(vitals[0])
-    print(vitals[0].age)
+    # Get the column names from the CaseVital table
+    columns = CaseVital.__table__.columns.keys()
+
+    # Convert query results to a DataFrame
+    df = pd.DataFrame([{column: getattr(vital, column) for column in columns} for vital in vitals])
     
-    
+    print(df)
     # 계산
 
     # 계산 값을 DB에 저장
@@ -119,10 +121,6 @@ async def create_case(data: MyData):
     # case.p_id = cases.p_id          
 
     # session.add(case)
-
-
-
-
     # session.commit()
 
     return {'result_msg': ' Registered...' }
