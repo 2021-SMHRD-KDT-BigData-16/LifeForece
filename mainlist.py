@@ -93,7 +93,6 @@ async def create_case(data: MyData):
     df = df.drop(['v_sequence'], axis=1)
     
     # 전처리 
-    
     import pretreatment as pre
     
     pre_df = pre.Pretreatment(df)
