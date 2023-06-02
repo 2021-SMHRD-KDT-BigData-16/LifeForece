@@ -23,11 +23,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
 @app.get("/")
 async def root():
     return {"message": "/cases 에서 사용자관리"}
-
 
 # ----------casetable에 있는 환자 점수 목록 가져오기------------
 @app.get("/cases", response_class=HTMLResponse)
@@ -37,7 +35,7 @@ async def read_cases(request: Request):
     cases = session.query(CaseTable).all()    
     
     context['request'] = request
-    context['cases'] = cases    
+    context['cases'] = cases       
 
     return templates.TemplateResponse("user_list.html", context)
 
@@ -45,15 +43,18 @@ async def read_cases(request: Request):
 @app.get("/cases/{case_id}", response_class=HTMLResponse)
 async def read_case(request: Request, case_id: float, page: int =1, rows_per_page: int=10):
     context = {}    
+    # 환자 아이디와 LF 점수 를 담기 위해서 하나 선택해오기
     case = session.query(CaseTable).filter(CaseTable.p_id == case_id).first()
     context['case'] = case
-    vitals_query = session.query(CaseVital).filter(CaseVital.p_id == case_id)
 
+    # 환자 한명의 바이탈 정보 담기
+    vitals_query = session.query(CaseVital).filter(CaseVital.p_id == case_id)
+   
+    # 페이징처리하기
     start_index = (page - 1) * rows_per_page
     end_index = start_index + rows_per_page
     # Calculate the total number of rows
-    total_rows = vitals_query.count()
-    
+    total_rows = vitals_query.count()    
     # Calculate the total number of pages
     total_pages = (total_rows + rows_per_page - 1) // rows_per_page  
     vitals = vitals_query.offset((page - 1) * rows_per_page).limit(rows_per_page).all()
@@ -66,29 +67,11 @@ async def read_case(request: Request, case_id: float, page: int =1, rows_per_pag
 
     return templates.TemplateResponse("user_detail.html", context)
 
-# ------ 환자 아이디를 입력하면 그 환자의 casevital값을 가져와서 함수에 넣어야함---
-# @app.get("/cases/{new_case}")   
-# async def read_case(new_case: float):
-    
-#     return {"message":"Case values retrieved successively"}
 
-# @app.post("/process")
-# async def process_dataframe(request: Request):
-#     dataframe = await request.form()
-#     dataframe_value = dataframe["dataframe"]
-    
-#     # Convert the JSON dataframe value to a pandas DataFrame
-#     import pandas as pd
-#     df = pd.read_json(dataframe_value)
-
-#     # Process the DataFrame as needed
-#     # ...
-
-#     return {"message": "DataFrame processed successfully"}
 
 
 class MyData(BaseModel):
-    id: str
+    id: float
 
 @app.post("/cases1")
 async def create_case(data: MyData):
@@ -104,8 +87,8 @@ async def create_case(data: MyData):
     # Convert query results to a DataFrame
     df = pd.DataFrame([{column: getattr(vital, column) for column in columns} for vital in vitals])
     
-    print(df)
     # 계산
+    #print(df)
     
     df = df.drop(['v_sequence'], axis=1)
     
@@ -114,7 +97,6 @@ async def create_case(data: MyData):
     import pretreatment as pre
     
     pre_df = pre.Pretreatment(df)
-    print(pre_df)
     
     # 모델 불러와서 예측
     
@@ -124,23 +106,14 @@ async def create_case(data: MyData):
     
     print(prediction)   
 
-    # 계산 값을 DB에 저장
-
-    # 원래 페이지로 이동
+    # 계산 값을 DB에 저장    
+    new_case = CaseTable(u_id='a',p_id=data.id, p_score=prediction)       
    
+    session.add(new_case)     
+    session.commit() 
 
-
-    # 점수가져와서 넣는 작업 필요
-    # u_id = "a"
-    # # p_id = "1225"    
-    # case = CaseTable()
-    # case.u_id = u_id
-    # case.p_id = cases.p_id          
-
-    # session.add(case)
-    # session.commit()
-
-    return {'result_msg': ' Registered...' }
+       
+    return {f"예측값은 {prediction} 과 같습니다"}
 
 #-------- 환자에 대한 코멘트 수정하기----------
 @app.put("/cases")

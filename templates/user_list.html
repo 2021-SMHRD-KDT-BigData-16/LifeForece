@@ -4,10 +4,21 @@
     <meta charset="UTF-8">
     <title>Case list</title>
 <!--<script type="module" src="your-script.js"></script>-->
+<style>
+  /* Tab content is initially hidden */
+  .tab-content {
+      display: none;
+  }
+
+  /* Style for active tab */
+  .active {
+      display: block;
+  }
+</style>
+
+<!---->
 <script>
-
 var xhr;
-
 // 환자추가하기
 function postCase() {
   var patientId = document.getElementById("newcase").value;
@@ -24,13 +35,14 @@ function postCase() {
       },
       body: JSON.stringify({id: patientId}),
     }) 
-    .then(response => response.json())
-    .then(data => {      
-      console.log(data);
+  .then(response => response.json())
+  .then(data => {     
+    console.log("확인");
+    location.reload();   
       
-     })
+  })
   .catch(error => {      
-      console.error(error);
+    console.error(error);
   });  
 
 }
@@ -96,9 +108,29 @@ function findCase() {
       });
   }
 }
-
-
 </script> 
+<!--탭 스크립트-->
+<script>
+  function openTab(event, tabName) {
+      var i, tabContent, tabLinks;
+
+      // Hide all tab content
+      tabContent = document.getElementsByClassName("tab-content");
+      for (i = 0; i < tabContent.length; i++) {
+          tabContent[i].style.display = "none";
+      }
+
+      // Remove "active" class from tab links
+      tabLinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tabLinks.length; i++) {
+          tabLinks[i].className = tabLinks[i].className.replace(" active", "");
+      }
+
+      // Show the selected tab content and mark the button as active
+      document.getElementById(tabName).style.display = "block";
+      event.currentTarget.className += " active";
+  }
+</script>
 
 
 
@@ -108,7 +140,7 @@ function findCase() {
     <div style="padding:10px;">
         <a href="/">HOME</a>
     </div>
-
+<!--환자 추가하기 // 검색하기 버튼-->
     <h1 style="padding:10px;">Caselist</h1>
     <div style="margin:20px 0">
         <input type="text" id="newcase" placeholder="환자아이디"/>        
@@ -118,6 +150,28 @@ function findCase() {
       <input type="text" id="findcase" placeholder="환자아이디"/>        
       <button onclick="findCase()">검색하기</button>
   </div>
+
+  <!--tab활성화-->
+ <!-- Tab navigation -->
+<div class="tab">
+  <button class="tablinks" onclick="openTab(event, 'tab1')">all</button>
+  <button class="tablinks" onclick="openTab(event, 'tab2')">detected</button>  
+</div>
+
+  <!-- Tab content -->
+<div id="tab1" class="tab-content">
+    <h3>Tab 1 Content</h3>
+    <p>This is the content of Tab 1.</p>
+</div>
+
+<div id="tab2" class="tab-content">
+    <h3>Tab 2 Content</h3>
+    <p>This is the content of Tab 2.</p>
+</div>
+
+
+
+<!--환자 테이블 나오는 곳-->
     <div  id="casetable">
     <table width="100%" border="1" cellpadding="0" cellspacing="0">
         <tr>
@@ -130,7 +184,7 @@ function findCase() {
             <th>자세히보기</th>
             <th>삭제</th>
         </tr>
-    
+   
     {% if cases %}        
     {% for case in cases %}
     <tr style="padding:10px;height:45px;" id="casebox_{{case.u_id}}">
