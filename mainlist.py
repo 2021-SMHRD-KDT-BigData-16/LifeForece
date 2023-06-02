@@ -106,6 +106,20 @@ async def create_case(data: MyData):
     
     print(df)
     # 계산
+    
+    # 전처리 
+    import pretreatment as pre
+    
+    pre_df = pre.Pretreatment(df)
+    print(pre_df)
+    
+    # 모델 불러와서 예측
+    
+    import prediction as pred
+    
+    prediction = pred.Prediction(pre_df)
+    
+    print(prediction)   
 
     # 계산 값을 DB에 저장
 
