@@ -11,27 +11,7 @@ var xhr;
 function postCase() {
 
   var patientId = document.getElementById("newcase").value;
-  console.log(patientId)
-// Make a POST request to the backend to create a new row in CaseTable
-  // fetch("/cases1", {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json"
-  //   },
-  //   body: JSON.stringify({
-  //     p_id: patientId
-  //   })
-  // })
-  // .then(response => response.json())
-  // .then(data => {
-  //   // Handle the response data
-  //   console.log(data);
-  //   // Perform any necessary actions with the response
-  // })
-  // .catch(error => {
-  //   // Handle errors
-  //   console.error(error);
-  // });      
+  console.log(patientId)  
   
   const data = {
     id: patientId, 

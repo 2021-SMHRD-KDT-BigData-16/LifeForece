@@ -9,6 +9,7 @@ from db import session
 from model import CaseTable, Case, CaseVital, Vital
 
 import json
+from pydantic import BaseModel
 
 templates = Jinja2Templates(directory="templates")
 
@@ -85,7 +86,6 @@ async def read_case(request: Request, case_id: float, page: int =1, rows_per_pag
 
 #     return {"message": "DataFrame processed successfully"}
 
-from pydantic import BaseModel
 
 class MyData(BaseModel):
     id: str
@@ -95,7 +95,14 @@ async def create_case(data: MyData):
     print(data.id)
 
     # 아이디로 DB 검색
-
+    context = {}        
+    vitals = session.query(CaseVital).filter(CaseVital.p_id == data.id)
+    context['vitals']= vitals
+    print(vitals)
+    print(vitals[0])
+    print(vitals[0].age)
+    
+    
     # 계산
 
     # 계산 값을 DB에 저장
