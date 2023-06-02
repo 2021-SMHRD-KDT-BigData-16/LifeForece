@@ -34,10 +34,10 @@ async def root():
 async def read_cases(request: Request):
     
     context = {}
-
     cases = session.query(CaseTable).all()    
+    
     context['request'] = request
-    context['cases'] = cases
+    context['cases'] = cases    
 
     return templates.TemplateResponse("user_list.html", context)
 
@@ -147,9 +147,9 @@ async def modify_cases(p_id: float = Form(...), p_cmt: str = Form(...)):
 
 
 @app.delete("/cases")
-async def delete_cases(p_id: float = Form(...)):   
-
-    case=session.query(CaseTable).filter(CaseTable.p_id == p_id).delete()
+async def delete_cases(p_id: float):   
+    print(p_id)
+    session.query(CaseTable).filter(CaseTable.p_id == p_id).delete()
     session.commit()
 
-    return {'result_msg': f"User deleted..."}
+    return {'result_msg': f"Case deleted..."}

@@ -8,8 +8,8 @@
 
 var xhr;
 
+// 환자추가하기
 function postCase() {
-
   var patientId = document.getElementById("newcase").value;
   console.log(patientId)  
   
@@ -25,19 +25,17 @@ function postCase() {
       body: JSON.stringify({id: patientId}),
     }) 
     .then(response => response.json())
-    .then(data => {
-      // Handle the response data
+    .then(data => {      
       console.log(data);
-      // Perform any necessary actions with the response
+      
      })
-  .catch(error => {
-      // Handle errors
+  .catch(error => {      
       console.error(error);
   });  
 
 }
 
-
+// 환자 코멘트 수정하기
 function putCase(pId) {      
     var comment = document.getElementById(`cmt_${pId}`).value;  
     console.log(comment)
@@ -61,26 +59,45 @@ function putCase(pId) {
     });
 }
 
-function delCase(pId) {    
-  if (confirm('삭제하시겠습니까?')) {
+// 환자번호 입력시 삭제하기
+function delCase(pId) {   
+  
+  if (confirm(`환자번호 ${pId}를 삭제하시겠습니까?`)) {
     fetch(`/cases?p_id=${pId}`, {
       method: 'DELETE',
+    })
+    .then(response => response.json())
+    .then(data => {        
+        console.log(data.result_msg);
+        location.reload();
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+  }
+}
+
+//환자 검색하기
+function findCase() {
+  const pId = document.getElementById('findcase').value;
+  console.log(pId)
+  if (pId.trim() !== '') {    
+    fetch(`/cases?p_id=${pId}`, {
+      method: 'GET',
     })
       .then(response => response.json())
       .then(data => {
         // Handle the response from the backend
-        console.log(data.result_msg);
-        // Remove the row from the table
-        const caseRow = document.getElementById(`casebox_${pId}`);
-        if (caseRow) {
-          caseRow.parentNode.removeChild(caseRow);
-        }        
+        console.log(data);
+        // Perform any additional actions if needed
       })
       .catch(error => {
         console.error('Error:', error);
       });
   }
 }
+
+
 </script> 
 
 
@@ -97,6 +114,10 @@ function delCase(pId) {
         <input type="text" id="newcase" placeholder="환자아이디"/>        
         <button onclick="postCase()">추가하기</button>
     </div>
+    <div style="margin:20px 0">
+      <input type="text" id="findcase" placeholder="환자아이디"/>        
+      <button onclick="findCase()">검색하기</button>
+  </div>
     <div  id="casetable">
     <table width="100%" border="1" cellpadding="0" cellspacing="0">
         <tr>
