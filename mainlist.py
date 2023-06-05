@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse
+#from fastapi.responses import JSONResponse
 from fastapi.templating import Jinja2Templates
 
 from typing import List
@@ -22,26 +23,32 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+# from fastapi import FastAPI, Depends
+# from fastapi.responses import JSONResponse
+# from sqlalchemy.orm import Session
+# from db import get_db
 
 @app.get("/")
 async def root():
-    return {"message": "/cases 에서 사용자관리"}
+    return {"message": "/cases 에서 사용자관리"}    
 
 # ----------casetable에 있는 환자 점수 목록 가져오기------------
 @app.get("/cases", response_class=HTMLResponse)
-async def read_cases(request: Request):
-    
+async def read_cases(request: Request):    
     context = {}
-    cases = session.query(CaseTable).all()    
-    
+    #cases = db.query(CaseTable).all()
+    cases = session.query(CaseTable).all()
     context['request'] = request
-    context['cases'] = cases       
+    context['cases'] = cases   
+ 
+    session.close()   
 
     return templates.TemplateResponse("user_list.html", context)
+    #return JSONResponse(content=cases)
 
 # ------환자 점수 목록에서 클릭시 환자의 casevital에 있는 값을 다른페이지에 가져오기----
 @app.get("/cases/{case_id}", response_class=HTMLResponse)
-async def read_case(request: Request, case_id: float, page: int =1, rows_per_page: int=10):
+async def read_case(request: Request, case_id: int, page: int =1, rows_per_page: int=10):
     context = {}    
     # 환자 아이디와 LF 점수 를 담기 위해서 하나 선택해오기
     case = session.query(CaseTable).filter(CaseTable.p_id == case_id).first()
@@ -64,18 +71,17 @@ async def read_case(request: Request, case_id: float, page: int =1, rows_per_pag
     context['page'] = page
     context['rows_per_page'] = rows_per_page
     context['total_pages'] = total_pages
+    session.close()
 
     return templates.TemplateResponse("user_detail.html", context)
 
 
-
-
 class MyData(BaseModel):
-    id: float
+    id: int
 
 @app.post("/cases1")
 async def create_case(data: MyData):
-    print(data.id)
+    print(data.id)    
 
     # 아이디로 DB 검색
     context = {}        
@@ -88,10 +94,10 @@ async def create_case(data: MyData):
     df = pd.DataFrame([{column: getattr(vital, column) for column in columns} for vital in vitals])
     
     # 계산
-    #print(df)
+    print("즈어장")
     
     df = df.drop(['v_sequence'], axis=1)
-    
+    print(df)
     # 전처리 
     import pretreatment as pre
     
@@ -116,7 +122,7 @@ async def create_case(data: MyData):
 
 #-------- 환자에 대한 코멘트 수정하기----------
 @app.put("/cases")
-async def modify_cases(p_id: float = Form(...), p_cmt: str = Form(...)):
+async def modify_cases(p_id: int = Form(...), p_cmt: str = Form(...)):
     #async def modify_cases(p_id: int = Form(...), p_cmt: str = Form(...)):
     #점수변화 확인하려면 # 풀어주기
     #현재는 cmt 만 수정할 수 있도록 해줬음
@@ -134,9 +140,9 @@ async def modify_cases(p_id: float = Form(...), p_cmt: str = Form(...)):
 
     return { 'result_msg': f"{p_id} updated..." }
 
-
+#-------- 환자 삭제하기 -------------------
 @app.delete("/cases")
-async def delete_cases(p_id: float):   
+async def delete_cases(p_id: int):   
     print(p_id)
     session.query(CaseTable).filter(CaseTable.p_id == p_id).delete()
     session.commit()

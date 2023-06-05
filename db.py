@@ -22,6 +22,6 @@ session = scoped_session(
         bind=engine
     )
 )
-
 Base = declarative_base()
 Base.query = session.query_property()
+

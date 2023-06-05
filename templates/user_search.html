@@ -23,6 +23,10 @@ var xhr;
 function postCase() {
   var patientId = document.getElementById("newcase").value;
   console.log(patientId)  
+  
+  const data = {
+    id: patientId, 
+  };
 
   fetch("/cases1", {
       method: 'POST',
@@ -32,9 +36,8 @@ function postCase() {
       body: JSON.stringify({id: patientId}),
     }) 
   .then(response => response.json())
-  console.log("확인2")
   .then(data => {     
-    console.log("확인3");
+    console.log("확인");
     location.reload();   
       
   })
@@ -43,7 +46,6 @@ function postCase() {
   });  
 
 }
-
 
 // 환자 코멘트 수정하기
 function putCase(pId) {      
@@ -131,6 +133,7 @@ function findCase() {
 </script>
 
 
+
 </head>
 <body>
 
@@ -165,11 +168,8 @@ function findCase() {
     <h3>Tab 2 Content</h3>
     <p>This is the content of Tab 2.</p>
 </div>
-
-
-
 <!--환자 테이블 나오는 곳-->
-    <div  id="casetable">
+<div  id="casetable">
     <table width="100%" border="1" cellpadding="0" cellspacing="0">
         <tr>
             <th>환자아이디</th>
@@ -181,31 +181,7 @@ function findCase() {
             <th>자세히보기</th>
             <th>삭제</th>
         </tr>
-   
-    {% if cases %}        
-    {% for case in cases %}
-    <tr style="padding:10px;height:45px;" id="casebox_{{case.u_id}}">
-        
-        <td align="center" id="pid_{{case.p_id}}">{{ case.p_id }}</td>
-        
-        <td align="center">{{case.p_score}}</td>
-        <td align="center">{{case.p_SOFA}}</td>
-        <td align="center">{{case.p_MEWS}}</td>
-        <td align="center"><input type="text" id="cmt_{{case.p_id}}" value="{{case.p_cmt}}"></td>
-        <td align="center"><button onclick="putCase('{{case.p_id}}')">cmt</button></td>
-        <td align="center"><a href="/cases/{{case.p_id}}"><button>보기</button></a></td>
-        <td align="center"><button onclick="delCase('{{case.p_id}}')">삭제</button></td>
-        </tr>
-        {% endfor %}
-    {% else %}
-        <tr style="padding:10px;border-top:solid 1px #3388cc;">
-            <td>
-            No case...
-            </td>
-        </tr>
-    {% endif %}
-    </table>
-    </div>
+
 
 </body>
 </html>

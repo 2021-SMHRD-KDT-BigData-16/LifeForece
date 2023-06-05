@@ -10,19 +10,19 @@ from db import engine
 class CaseTable(Base):
     __tablename__ = 'caseinfo'
     u_id = Column(String(45), primary_key=True)
-    p_id = Column(Float, primary_key=True)
-    p_score = Column(Float, nullable=True)
-    p_SOFA = Column(Float, nullable=True)
-    p_MEWS = Column(Float, nullable=True)
+    p_id = Column(Integer, primary_key=True)
+    p_score = Column(Integer, nullable=True)
+    p_SOFA = Column(Integer, nullable=True)
+    p_MEWS = Column(Integer, nullable=True)
     p_cmt = Column(String(45), nullable=True)
     
 
 class Case(BaseModel):
     u_id   : str
-    p_id : float
-    p_score  : float
-    p_SOFA : float
-    p_MEWS : float
+    p_id : int
+    p_score  : int
+    p_SOFA : int
+    p_MEWS : int
     p_cmt :  str
     
 #p_id = Column(Float,ForeignKey('caseinfo.p_id', name="fk_casevital_caseinfo_u_id", ondelete='CASCADE'))
@@ -30,10 +30,9 @@ class Case(BaseModel):
 class CaseVital(Base):
     __tablename__ = 'casevital'
     v_sequence = Column(Integer, primary_key=True, autoincrement=True)
-    p_id = Column(Float,nullable=False)
+    p_id = Column(Integer,nullable=False)
     rec_time = Column(String(45), nullable=True)
-    age = Column(Float, nullable=True)
-    Gender = Column(Float, nullable=True)
+    age = Column(Integer, nullable=True)    
     ICUtype = Column(Float, nullable=True)
     ALP = Column(Float, nullable=True)
     ALT = Column(Float, nullable=True)
@@ -75,10 +74,9 @@ class CaseVital(Base):
 
 class Vital(BaseModel):
     v_sequence: int
-    p_id: float
+    p_id: int
     rec_time: str
-    age: float
-    Gender: float
+    age: int    
     ICUtype: float
     ALP: float
     ALT: float
