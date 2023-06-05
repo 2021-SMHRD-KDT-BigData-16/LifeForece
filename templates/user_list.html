@@ -31,13 +31,16 @@ function postCase() {
       },
       body: JSON.stringify({id: patientId}),
     }) 
-  .then(response => response.json())
-  console.log("확인2")
-  .then(data => {     
-    console.log("확인3");
-    location.reload();   
-      
+
+  //.then(response => response.json())
+  //console.log("확인2")
+
+  .then(data => {
+    
+    console.log(data.result_msg)    
+    location.reload(); 
   })
+
   .catch(error => {      
     console.error(error);
   });  
@@ -58,11 +61,8 @@ function putCase(pId) {
     body: `p_id=${pId}&p_cmt=${encodeURIComponent(comment)}`,
   })
     .then(response => response.json())
-    .then(data => {
-      // Handle the response from the backend
-      console.log(data.result_msg);
-      // Update the input value with the updated comment
-      
+    .then(data => {      
+      console.log(data.result_msg);         
     })
     .catch(error => {
       console.error('Error:', error);
@@ -186,8 +186,7 @@ function findCase() {
     {% for case in cases %}
     <tr style="padding:10px;height:45px;" id="casebox_{{case.u_id}}">
         
-        <td align="center" id="pid_{{case.p_id}}">{{ case.p_id }}</td>
-        
+        <td align="center" id="pid_{{case.p_id}}">{{ case.p_id }}</td>        
         <td align="center">{{case.p_score}}</td>
         <td align="center">{{case.p_SOFA}}</td>
         <td align="center">{{case.p_MEWS}}</td>

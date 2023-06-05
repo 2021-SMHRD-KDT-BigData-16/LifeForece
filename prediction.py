@@ -8,7 +8,7 @@ def Prediction(test_df):
     import torch.nn.functional as F
     
     X_test = []
-    pid_x = test_df.drop(columns=['p_id', 'Gender']) 
+    pid_x = test_df.drop(columns=['p_id']) 
     pid_x = pid_x.astype(float)
     X_test.append(pid_x)
     X_test = np.array(X_test)

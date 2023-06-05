@@ -93,11 +93,9 @@ async def create_case(data: MyData):
     # Convert query results to a DataFrame
     df = pd.DataFrame([{column: getattr(vital, column) for column in columns} for vital in vitals])
     
-    # 계산
-    print("즈어장")
-    
+    # 계산       
     df = df.drop(['v_sequence'], axis=1)
-    print(df)
+    #print(df)
     # 전처리 
     import pretreatment as pre
     
@@ -109,16 +107,16 @@ async def create_case(data: MyData):
     
     prediction = pred.Prediction(pre_df)
     
-    print(prediction)   
+    #print(prediction)   
 
     # 계산 값을 DB에 저장    
     new_case = CaseTable(u_id='a',p_id=data.id, p_score=prediction)       
-   
-    session.add(new_case)     
+    
+    session.add(new_case)      
     session.commit() 
-
+    print("확인")
        
-    return {f"예측값은 {prediction} 과 같습니다"}
+    return { 'result_msg': f"{data.id} added..." }
 
 #-------- 환자에 대한 코멘트 수정하기----------
 @app.put("/cases")
@@ -143,8 +141,21 @@ async def modify_cases(p_id: int = Form(...), p_cmt: str = Form(...)):
 #-------- 환자 삭제하기 -------------------
 @app.delete("/cases")
 async def delete_cases(p_id: int):   
-    print(p_id)
     session.query(CaseTable).filter(CaseTable.p_id == p_id).delete()
     session.commit()
+    print(p_id)
 
-    return {'result_msg': f"Case deleted..."}
+    return {'result_msg': f"{p_id} deleted..."}
+
+#------- 환자 검색하기 -------------------
+@app.get("/cases?p_id={case_id}", response_class=HTMLResponse)
+async def find_cases(case_id: int, request: Request):
+    context = {}    
+    # 환자 아이디와 LF 점수 를 담기 위해서 하나 선택해오기
+    case = session.query(CaseTable).filter(CaseTable.p_id == case_id).first()
+    context['case'] = case
+    # 환자 한명의 바이탈 정보 담기   
+    context['request'] = request  
+    session.close()
+
+    return templates.TemplateResponse("user_search.html", context)

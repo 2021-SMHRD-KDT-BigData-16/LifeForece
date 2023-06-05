@@ -54,10 +54,10 @@
                 <th align="center">MBP</th>                
             </tr>
         {% if vitals %}
-            {% for vital in vitals %}
+            {% for vital in vitals %}              
             <tr style="padding:10px;height:45px;" id="casebox_{{vital.u_id}}">
                              
-                <td align="center">{{vital.rec_time}}</td>
+                <!--<td align="center">{{vital.rec_time}}</td>
                 <td align="center">{{vital.age}}</td>                
                 <td align="center">{{vital.ICUtype}}</td>
                 <td align="center">{{vital.ALP}}</td>
@@ -89,11 +89,18 @@
                 <td align="center">{{vital.SBP}}</td>
                 <td align="center">{{vital.DBP}}</td>
                 <td align="center">{{vital.MBP}}</td>
-
-
             </tr>
-            {% endfor %}
-        {% else %}
+            {% endfor %}-->
+                {% for attribute, value in vital.items() %}
+                    <td align="center">
+                        {% if value == -1 %}
+                        Nan
+                        {% else %}
+                        {{ value }}
+                        {% endif %}
+                    </td>
+                {% endfor %}
+            {% else %}
             <tr style="padding:10px;border-top:solid 1px #3388cc;">
                 <td>
                 No user...
