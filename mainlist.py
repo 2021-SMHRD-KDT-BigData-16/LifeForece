@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request, Form
+from fastapi import FastAPI, Request, Form, Query
 from fastapi.responses import HTMLResponse
 #from fastapi.responses import JSONResponse
 from fastapi.templating import Jinja2Templates
@@ -121,18 +121,11 @@ async def create_case(data: MyData):
 #-------- 환자에 대한 코멘트 수정하기----------
 @app.put("/cases")
 async def modify_cases(p_id: int = Form(...), p_cmt: str = Form(...)):
-    #async def modify_cases(p_id: int = Form(...), p_cmt: str = Form(...)):
-    #점수변화 확인하려면 # 풀어주기
-    #현재는 cmt 만 수정할 수 있도록 해줬음
-
-    #caselist = list(cases)   
-    #u_id = caselist[0][1]
-    #p_id = caselist[1][1]...
-   
+      
     case = session.query(CaseTable).filter(CaseTable.p_id == p_id).first()
     #case.u_id = u_id
     #case.p_id = p_id..
-  
+    print("수정")
     case.p_cmt = p_cmt
     session.commit()
 
@@ -148,14 +141,14 @@ async def delete_cases(p_id: int):
     return {'result_msg': f"{p_id} deleted..."}
 
 #------- 환자 검색하기 -------------------
-@app.get("/cases?p_id={case_id}", response_class=HTMLResponse)
-async def find_cases(case_id: int, request: Request):
-    context = {}    
-    # 환자 아이디와 LF 점수 를 담기 위해서 하나 선택해오기
-    case = session.query(CaseTable).filter(CaseTable.p_id == case_id).first()
-    context['case'] = case
-    # 환자 한명의 바이탈 정보 담기   
-    context['request'] = request  
-    session.close()
 
+    
+@app.get("/search_case", response_class=HTMLResponse)
+async def search_case_by_id(request: Request, p_id: int):
+    context = {}
+    case = session.query(CaseTable).filter_by(p_id=p_id).first()    
+    context['request'] = request
+    context['case'] = case if case else {}
+    print()
+    session.close()
     return templates.TemplateResponse("user_search.html", context)

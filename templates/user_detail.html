@@ -1,27 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>사용자 - detail</title>
 </head>
+
 <body>
 
     <div style="padding:10px;">
         <a href="/">HOME</a>
         <a href="/cases">LIST</a>
     </div>
-   
+
     <h1 style="padding:10px;"><b>환자:{{case.p_id}}</b> </h1>
-    <h1 style="padding:10px;"><b>LF점수:{{case.p_score}}</b> </h1>
+    <h1 style="padding:10px;"><b>LFscore:{{case.p_score}}</b> </h1>
+    <h1 style="padding:10px;"><b>SOFAscore:</b> </h1>
+    <h1 style="padding:10px;"><b>MEWSscore:</b> </h1>
 
-    
-</div>
 
-    <div  id="vitaltable">
+    </div>
+
+    <div id="vitaltable">
         <table width="100%" border="1" cellpadding="0" cellspacing="0">
-            <tr>                
+            <tr>
                 <th align="center">rec_time</th>
-                <th align="center">age</th>                
+                <th align="center">age</th>
                 <th align="center">ICUtype</th>
                 <th align="center">ALP</th>
                 <th align="center">Albumin</th>
@@ -51,85 +55,56 @@
                 <th align="center">MechVent</th>
                 <th align="center">SBP</th>
                 <th align="center">DBP</th>
-                <th align="center">MBP</th>                
+                <th align="center">MBP</th>
             </tr>
-        {% if vitals %}
-            {% for vital in vitals %}              
+            {% if vitals %}
+            {% for vital in vitals %}
             <tr style="padding:10px;height:45px;" id="casebox_{{vital.u_id}}">
-                             
-                <!--<td align="center">{{vital.rec_time}}</td>
-                <td align="center">{{vital.age}}</td>                
-                <td align="center">{{vital.ICUtype}}</td>
-                <td align="center">{{vital.ALP}}</td>
-                <td align="center">{{vital.Albumin}}</td>
-                <td align="center">{{vital.BUN}}</td>
-                <td align="center">{{vital.Bilirubin}}</td>
-                <td align="center">{{vital.Cholesterol}}</td>
-                <td align="center">{{vital.Creatinine}}</td>
-                <td align="center">{{vital.FiO2}}</td>
-                <td align="center">{{vital.GCS}}</td>
-                <td align="center">{{vital.Glucose}}</td>
-                <td align="center">{{vital.HCO3}}</td>
-                <td align="center">{{vital.HCT}}</td>
-                <td align="center">{{vital.HR}}</td>
-                <td align="center">{{vital.K}}</td>
-                <td align="center">{{vital.Lactate}}</td>
-                <td align="center">{{vital.Mg}}</td>
-                <td align="center">{{vital.Na}}</td>
-                <td align="center">{{vital.PaCO2}}</td>
-                <td align="center">{{vital.PaO2}}</td>
-                <td align="center">{{vital.Platelets}}</td>
-                <td align="center">{{vital.RR}}</td>
-                <td align="center">{{vital.SPO2}}</td>
-                <td align="center">{{vital.BT}}</td>
-                <td align="center">{{vital.Urine}}</td>
-                <td align="center">{{vital.WBC}}</td>
-                <td align="center">{{vital.pH}}</td>
-                <td align="center">{{vital.MechVent}}</td>
-                <td align="center">{{vital.SBP}}</td>
-                <td align="center">{{vital.DBP}}</td>
-                <td align="center">{{vital.MBP}}</td>
-            </tr>
-            {% endfor %}-->
-                {% for attribute, value in vital.items() %}
-                    <td align="center">
-                        {% if value == -1 %}
-                        Nan
-                        {% else %}
-                        {{ value }}
-                        {% endif %}
-                    </td>
+                {% set vital_dict = vital.__dict__ %}
+                {% for attribute, value in vital_dict.items() %}
+                {% if attribute != '_sa_instance_state' %}
+                <td align="center">
+                    {% if value == -1 %}
+                    -
+                    {% else %}
+                    {{ value }}
+                    {% endif %}
+                </td>
+                {% endif %}
                 {% endfor %}
+            </tr>
+            {% endfor %}
             {% else %}
             <tr style="padding:10px;border-top:solid 1px #3388cc;">
                 <td>
-                No user...
+                    No user...
                 </td>
             </tr>
-        {% endif %}
+            {% endif %}
         </table>
-        </div>
-<!-- Display navigation links or buttons for paging -->
-<div>
-    <!-- Previous page link -->
-    {% if page > 1 %}
+    </div>
+    <!-- Display navigation links or buttons for paging -->
+    <div>
+        <!-- Previous page link -->
+        {% if page > 1 %}
         <a href="/cases/{{case.p_id}}?page={{ page - 1 }}&rows_per_page={{ rows_per_page }}">Previous</a>
-    {% endif %}
-
-    <!-- Page numbers -->
-    {% for p in range(1, total_pages + 1) %}
-        {% if p == page %}
-            <strong>{{ p }}</strong>
-        {% else %}
-            <a href="/cases/{{case.p_id}}?page={{ p }}&rows_per_page={{ rows_per_page }}">{{ p }}</a>
         {% endif %}
-    {% endfor %}
 
-    <!-- Next page link -->
-    {% if page < total_pages %}
-        <a href="/cases/{{case.p_id}}?page={{ page + 1 }}&rows_per_page={{ rows_per_page }}">Next</a>
-    {% endif %}
-</div>
-    
+        <!-- Page numbers -->
+        {% for p in range(1, total_pages + 1) %}
+        {% if p == page %}
+        <strong>{{ p }}</strong>
+        {% else %}
+        <a href="/cases/{{case.p_id}}?page={{ p }}&rows_per_page={{ rows_per_page }}">{{ p }}</a>
+        {% endif %}
+        {% endfor %}
+
+        <!-- Next page link -->
+        {% if page < total_pages %} <a
+            href="/cases/{{case.p_id}}?page={{ page + 1 }}&rows_per_page={{ rows_per_page }}">Next</a>
+            {% endif %}
+    </div>
+
 </body>
+
 </html>

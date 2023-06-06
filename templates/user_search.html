@@ -1,187 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Case list</title>
-<!--<script type="module" src="your-script.js"></script>-->
-<style>
-  /* Tab content is initially hidden */
-  .tab-content {
+  <meta charset="UTF-8">
+  <title>Case Search</title>
+  <!--<script type="module" src="your-script.js"></script>-->
+  <style>
+    /* Tab content is initially hidden */
+    .tab-content {
       display: none;
-  }
+    }
 
-  /* Style for active tab */
-  .active {
+    /* Style for active tab */
+    .active {
       display: block;
-  }
-</style>
+    }
+  </style>
+  <script>
+    //환자 검색하기
+    function searchCase() {
+      var pId = document.getElementById('p_id').value;
+      console.log(pId)
 
-<!---->
-<script>
-var xhr;
-// 환자추가하기
-function postCase() {
-  var patientId = document.getElementById("newcase").value;
-  console.log(patientId)  
-  
-  const data = {
-    id: patientId, 
-  };
-
-  fetch("/cases1", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({id: patientId}),
-    }) 
-  .then(response => response.json())
-  .then(data => {     
-    console.log("확인");
-    location.reload();   
-      
-  })
-  .catch(error => {      
-    console.error(error);
-  });  
-
-}
-
-// 환자 코멘트 수정하기
-function putCase(pId) {      
-    var comment = document.getElementById(`cmt_${pId}`).value;  
-    console.log(comment)
-    
-    fetch('/cases', {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: `p_id=${pId}&p_cmt=${encodeURIComponent(comment)}`,
-  })
-    .then(response => response.json())
-    .then(data => {
-      // Handle the response from the backend
-      console.log(data.result_msg);
-      // Update the input value with the updated comment
-      
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
-}
-
-// 환자번호 입력시 삭제하기
-function delCase(pId) {   
-  
-  if (confirm(`환자번호 ${pId}를 삭제하시겠습니까?`)) {
-    fetch(`/cases?p_id=${pId}`, {
-      method: 'DELETE',
-    })
-    .then(response => response.json())
-    .then(data => {        
-        console.log(data.result_msg);
-        location.reload();
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-  }
-}
-
-//환자 검색하기
-function findCase() {
-  const pId = document.getElementById('findcase').value;
-  console.log(pId)
-  if (pId.trim() !== '') {    
-    fetch(`/cases?p_id=${pId}`, {
-      method: 'GET',
-    })
-      .then(response => response.json())
-      .then(data => {
-        // Handle the response from the backend
-        console.log(data);
-        // Perform any additional actions if needed
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
-  }
-}
-</script> 
-<!--탭 스크립트-->
-<script>
-  function openTab(event, tabName) {
-      var i, tabContent, tabLinks;
-
-      // Hide all tab content
-      tabContent = document.getElementsByClassName("tab-content");
-      for (i = 0; i < tabContent.length; i++) {
-          tabContent[i].style.display = "none";
+      // Check if pId is valid
+      if (pId.trim() !== "") {
+        // Redirect to the user_search page with the p_id as a query parameter
+        window.location.href = `/search_case?p_id=${pId}`;
+        console.log(pId)
+      } else {
+        alert("환자 id를 확인하세요");
       }
-
-      // Remove "active" class from tab links
-      tabLinks = document.getElementsByClassName("tablinks");
-      for (i = 0; i < tabLinks.length; i++) {
-          tabLinks[i].className = tabLinks[i].className.replace(" active", "");
-      }
-
-      // Show the selected tab content and mark the button as active
-      document.getElementById(tabName).style.display = "block";
-      event.currentTarget.className += " active";
-  }
-</script>
-
+    }
+  </script>
 
 
 </head>
+
 <body>
 
-    <div style="padding:10px;">
-        <a href="/">HOME</a>
-    </div>
-<!--환자 추가하기 // 검색하기 버튼-->
-    <h1 style="padding:10px;">Caselist</h1>
-    <div style="margin:20px 0">
-        <input type="text" id="newcase" placeholder="환자아이디"/>        
-        <button onclick="postCase()">추가하기</button>
-    </div>
-    <div style="margin:20px 0">
-      <input type="text" id="findcase" placeholder="환자아이디"/>        
-      <button onclick="findCase()">검색하기</button>
+  <div style="padding:10px;">
+    <a href="/">HOME</a>
+  </div>
+  <!-- 검색하기 버튼-->
+
+  <div style="margin: 20px 0">
+    <input type="number" id="p_id" placeholder="P_ID">
+    <button onclick="searchCase()">Search</button>
   </div>
 
-  <!--tab활성화-->
- <!-- Tab navigation -->
-<div class="tab">
-  <button class="tablinks" onclick="openTab(event, 'tab1')">all</button>
-  <button class="tablinks" onclick="openTab(event, 'tab2')">detected</button>  
-</div>
 
-  <!-- Tab content -->
-<div id="tab1" class="tab-content">
-    <h3>Tab 1 Content</h3>
-    <p>This is the content of Tab 1.</p>
-</div>
 
-<div id="tab2" class="tab-content">
-    <h3>Tab 2 Content</h3>
-    <p>This is the content of Tab 2.</p>
-</div>
-<!--환자 테이블 나오는 곳-->
-<div  id="casetable">
+  <!--환자 테이블 나오는 곳-->
+  {% if case %}
+  <div id="casetable">
     <table width="100%" border="1" cellpadding="0" cellspacing="0">
-        <tr>
-            <th>환자아이디</th>
-            <th>LF점수</th>
-            <th>SOFA점수</th>
-            <th>MEWS점수</th>
-            <th>코멘트</th>
-            <th>추가</th>
-            <th>자세히보기</th>
-            <th>삭제</th>
-        </tr>
-
-
+      <tr>
+        <th>환자아이디</th>
+        <th>LF점수</th>
+        <th>SOFA점수</th>
+        <th>MEWS점수</th>
+        <th>코멘트</th>
+        <th>추가</th>
+        <th>자세히보기</th>
+        <th>삭제</th>
+      </tr>
+      <tr>
+        <td align="center" id="pid_{{case.p_id}}">{{ case.p_id }}</td>
+        <td align="center">{{case.p_score}}</td>
+        <td align="center">{{case.p_SOFA}}</td>
+        <td align="center">{{case.p_MEWS}}</td>
+        <td align="center"><input type="text" id="cmt_{{case.p_id}}" value="{{case.p_cmt}}"></td>
+        <td align="center"><button onclick="putCase('{{case.p_id}}')">cmt</button></td>
+        <td align="center"><a href="/cases/{{case.p_id}}"><button>보기</button></a></td>
+        <td align="center"><button onclick="delCase('{{case.p_id}}')">삭제</button></td>
+      </tr>
+      {% else %}
+      존재하지 않는 환자번호입니다.
+      {% endif %}
+    </table>
+  </div>
 </body>
+
 </html>
