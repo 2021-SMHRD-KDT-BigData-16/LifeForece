@@ -60,27 +60,52 @@
             {% if vitals %}
             {% for vital in vitals %}
             <tr style="padding:10px;height:45px;" id="casebox_{{vital.u_id}}">
-                {% set vital_dict = vital.__dict__ %}
-                {% for attribute, value in vital_dict.items() %}
-                {% if attribute != '_sa_instance_state' %}
-                <td align="center">
-                    {% if value == -1 %}
-                    -
-                    {% else %}
-                    {{ value }}
-                    {% endif %}
-                </td>
-                {% endif %}
-                {% endfor %}
+                <td align="center">{{vital.v_sequence}} </td>               
+                <td align="center">{{vital.rec_time}}</td>
+                <td align="center">{{vital.age}}</td>
+                <td align="center">{{vital.Gender}}</td>
+                <td align="center">{{vital.ICUtype}}</td>
+                <td align="center">{{vital.ALP}}</td>
+                <td align="center">{{vital.Albumin}}</td>
+                <td align="center">{{vital.BUN}}</td>
+                <td align="center">{{vital.Bilirubin}}</td>
+                <td align="center">{{vital.Cholesterol}}</td>
+                <td align="center">{{vital.Creatinine}}</td>
+                <td align="center">{{vital.FiO2}}</td>
+                <td align="center">{{vital.GCS}}</td>
+                <td align="center">{{vital.Glucose}}</td>
+                <td align="center">{{vital.HCO3}}</td>
+                <td align="center">{{vital.HCT}}</td>
+                <td align="center">{{vital.HR}}</td>
+                <td align="center">{{vital.K}}</td>
+                <td align="center">{{vital.Lactate}}</td>
+                <td align="center">{{vital.Mg}}</td>
+                <td align="center">{{vital.Na}}</td>
+                <td align="center">{{vital.PaCO2}}</td>
+                <td align="center">{{vital.PaO2}}</td>
+                <td align="center">{{vital.Platelets}}</td>
+                <td align="center">{{vital.RR}}</td>
+                <td align="center">{{vital.SPO2}}</td>
+                <td align="center">{{vital.BT}}</td>
+                <td align="center">{{vital.Urine}}</td>
+                <td align="center">{{vital.WBC}}</td>
+                <td align="center">{{vital.pH}}</td>
+                <td align="center">{{vital.MechVent}}</td>
+                <td align="center">{{vital.SBP}}</td>
+                <td align="center">{{vital.DBP}}</td>
+                <td align="center">{{vital.MBP}}</td>
+
+
             </tr>
             {% endfor %}
-            {% else %}
+        {% else %}
             <tr style="padding:10px;border-top:solid 1px #3388cc;">
                 <td>
-                    No user...
+                No user...
                 </td>
             </tr>
-            {% endif %}
+        {% endif %}
+           
         </table>
     </div>
     <!-- Display navigation links or buttons for paging -->
