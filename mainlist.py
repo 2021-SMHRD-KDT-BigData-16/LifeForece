@@ -96,7 +96,7 @@ async def read_case(request: Request, case_id: int, page: int = 1, rows_per_page
     vitals = vitals_query.offset(
         (page - 1) * rows_per_page).limit(rows_per_page).all()
 
-    context['vitals'] = vitals
+    context['vitals'] = vitals    
     context['request'] = request
     context['page'] = page
     context['rows_per_page'] = rows_per_page

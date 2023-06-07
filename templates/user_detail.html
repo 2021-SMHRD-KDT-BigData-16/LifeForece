@@ -9,14 +9,14 @@
 <body>
 
     <div style="padding:10px;">
-        <a href="/">HOME</a>
+        <a href="/">LOGIN</a>
         <a href="/cases">LIST</a>
     </div>
 
     <h1 style="padding:10px;"><b>환자:{{case.p_id}}</b> </h1>
     <h1 style="padding:10px;"><b>LFscore:{{case.p_score}}</b> </h1>
-    <h1 style="padding:10px;"><b>SOFAscore:</b> </h1>
-    <h1 style="padding:10px;"><b>MEWSscore:</b> </h1>
+    <h1 style="padding:10px;"><b>SOFAscore:{{case.p_SOFA}}</b> </h1>
+    <h1 style="padding:10px;"><b>MEWSscore:{{case.p_MEWS}}</b> </h1>
 
 
     </div>
@@ -24,9 +24,8 @@
     <div id="vitaltable">
         <table width="100%" border="1" cellpadding="0" cellspacing="0">
             <tr>
-                <th align="center">rec_time</th>
-                <th align="center">age</th>
-                <th align="center">ICUtype</th>
+                
+                <th align="center">rec_time</th> 
                 <th align="center">ALP</th>
                 <th align="center">Albumin</th>
                 <th align="center">BUN</th>
@@ -58,50 +57,49 @@
                 <th align="center">MBP</th>
             </tr>
             {% if vitals %}
+            나이: {{vitals[0].age}}
+            성별: {{"여성" if vitals[0].female==1 else "남성"}}
+            중환자실:{{vitals[0].ICUtype}}
             {% for vital in vitals %}
             <tr style="padding:10px;height:45px;" id="casebox_{{vital.u_id}}">
-                <td align="center">{{vital.v_sequence}} </td>               
-                <td align="center">{{vital.rec_time}}</td>
-                <td align="center">{{vital.age}}</td>
-                <td align="center">{{vital.Gender}}</td>
-                <td align="center">{{vital.ICUtype}}</td>
-                <td align="center">{{vital.ALP}}</td>
-                <td align="center">{{vital.Albumin}}</td>
-                <td align="center">{{vital.BUN}}</td>
-                <td align="center">{{vital.Bilirubin}}</td>
-                <td align="center">{{vital.Cholesterol}}</td>
-                <td align="center">{{vital.Creatinine}}</td>
-                <td align="center">{{vital.FiO2}}</td>
-                <td align="center">{{vital.GCS}}</td>
-                <td align="center">{{vital.Glucose}}</td>
-                <td align="center">{{vital.HCO3}}</td>
-                <td align="center">{{vital.HCT}}</td>
+                           
+                <td align="center">{{vital.rec_time}}</td>                 
+                <td align="center">{{vital.ALP if vital.ALP != -1 else "Nan"}}</td>
+                <td align="center">{{vital.Albumin if vital.Albumin != -1 else "Nan"}}</td>
+                <td align="center">{{vital.BUN if vital.BUN != -1 else "Nan"}}</td>
+                <td align="center">{{vital.Bilirubin if vital.Bilirubin != -1 else "Nan"}}</td>
+                <td align="center">{{vital.Cholesterol if vital.Cholesterol != -1 else "Nan"}}</td>
+                <td align="center">{{vital.Creatinine if vital.Creatinine != -1 else "Nan"}}</td>
+                <td align="center">{{vital.FiO2 if vital.FiO2 != -1 else "Nan"}}</td>
+                <td align="center">{{vital.GCS if vital.GCS != -1 else "Nan"}}</td>
+                <td align="center">{{vital.Glucose if vital.Glucose != -1 else "Nan"}}</td>
+                <td align="center">{{vital.HCO3 if vital.HCO3 != -1 else "Nan"}}</td>
+                <td align="center">{{vital.HCT if vital.HCT != -1 else "Nan"}}</td>
                 <td align="center">{{vital.HR}}</td>
-                <td align="center">{{vital.K}}</td>
-                <td align="center">{{vital.Lactate}}</td>
-                <td align="center">{{vital.Mg}}</td>
-                <td align="center">{{vital.Na}}</td>
-                <td align="center">{{vital.PaCO2}}</td>
-                <td align="center">{{vital.PaO2}}</td>
-                <td align="center">{{vital.Platelets}}</td>
+                <td align="center">{{vital.K if vital.K != -1 else "Nan"}}</td>
+                <td align="center">{{vital.Lactate if vital.Lactate != -1 else "Nan"}}</td>
+                <td align="center">{{vital.Mg if vital.Mg != -1 else "Nan"}}</td>
+                <td align="center">{{vital.Na if vital.Na != -1 else "Nan"}}</td>
+                <td align="center">{{vital.PaCO2 if vital.PaCO2 != -1 else "Nan"}}</td>
+                <td align="center">{{vital.PaO2 if vital.PaO2 != -1 else "Nan"}}</td>
+                <td align="center">{{vital.Platelets if vital.Platelets != -1 else "Nan"}}</td>
                 <td align="center">{{vital.RR}}</td>
                 <td align="center">{{vital.SPO2}}</td>
-                <td align="center">{{vital.BT}}</td>
-                <td align="center">{{vital.Urine}}</td>
-                <td align="center">{{vital.WBC}}</td>
-                <td align="center">{{vital.pH}}</td>
-                <td align="center">{{vital.MechVent}}</td>
+                <td align="center">{{vital.BT if vital.BT != -1 else "Nan"}}</td>
+                <td align="center">{{vital.Urine if vital.Urine != -1 else "Nan"}}</td>
+                <td align="center">{{vital.WBC if vital.WBC != -1 else "Nan"}}</td>
+                <td align="center">{{vital.pH if vital.pH != -1 else "Nan"}}</td>
+                <td align="center">{{vital.MechVent if vital.MechVent != -1 else "Nan"}}</td>
                 <td align="center">{{vital.SBP}}</td>
                 <td align="center">{{vital.DBP}}</td>
                 <td align="center">{{vital.MBP}}</td>
-
 
             </tr>
             {% endfor %}
         {% else %}
             <tr style="padding:10px;border-top:solid 1px #3388cc;">
                 <td>
-                No user...
+                환자의 데이터가 존재하지 않습니다
                 </td>
             </tr>
         {% endif %}
