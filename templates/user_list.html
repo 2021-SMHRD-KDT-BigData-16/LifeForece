@@ -32,9 +32,7 @@
         },
         body: JSON.stringify({ id: patientId }),
       })
-        //.then(response => response.json())
-        //console.log("확인2")
-
+        .then(response => response.json())  
         .then(data => {
           console.log(data.result_msg)
           location.reload();
@@ -119,10 +117,12 @@
 <body>
 
   <div style="padding:10px;">
-    <a href="/">HOME</a>
+    <a href="/"></a>
   </div>
   <!--환자 추가하기 // 검색하기 버튼-->
-  <h1 style="padding:10px;">Caselist</h1>
+  
+  <h4 style="padding:10px;">{{user}}님 로그인 하셨습니다.</h4>
+ 
   <div style="margin:20px 0">
     <input type="text" id="newcase" placeholder="환자아이디" />
     <button onclick="postCase()">추가하기</button>
@@ -140,12 +140,6 @@
   <button id="tabButton1" onclick="showTab('tabContent1')">all</button>
   <button id="tabButton2" onclick="showTab('tabContent2')">detected</button>
 
-
-  <!--LF 점수 몇점 이상만 나오게-->
-  <div id="tabContent2" class="tab-content">
-    <h2>Tab 2 Content</h2>
-    <p>This is the content of tab 2.</p>
-  </div>
 
   <!--환자 테이블 나오는 곳-->
   <div id="tabContent1" class="tab-content" style="display: block;">
@@ -181,6 +175,49 @@
         <tr style="padding:10px;border-top:solid 1px #3388cc;">
           <td>
             No case...
+          </td>
+        </tr>
+        {% endif %}
+      </table>
+    </div>
+  </div>
+
+  <!--LF 점수 몇점(기본값: 60점) 이상만 나오게-->
+  <div id="tabContent2" class="tab-content">
+    <div id="casetable">
+      <table width="100%" border="1" cellpadding="0" cellspacing="0">
+        <tr>
+          <th>환자아이디</th>
+          <th>환자이름</th>
+          <th>LF점수</th>
+          <th>SOFA점수</th>
+          <th>MEWS점수</th>
+          <th>코멘트</th>
+          <th>자세히보기</th>
+          <th>삭제</th>
+        </tr>
+
+        {% if cases %}
+        {% for case in cases %}
+        {% if case.p_score >= 60 %}
+        <tr style="padding:10px;height:45px;" id="casebox_{{case.u_id}}">
+          <td align="center" id="pid_{{case.p_id}}">{{ case.p_id }}</td>
+          <td align="center">이름</td>
+          <td align="center">{{case.p_score}}</td>
+          <td align="center">{{case.p_SOFA}}</td>
+          <td align="center">{{case.p_MEWS}}</td>
+          <td align="center"><input type="text" id="cmt_{{case.p_id}}" value="{{case.p_cmt}}">
+            <button onclick="putCase('{{case.p_id}}')">cmt</button>
+          </td>
+          <td align="center"><a href="/cases/{{case.p_id}}"><button>보기</button></a></td>
+          <td align="center"><button onclick="delCase('{{case.p_id}}')">삭제</button></td>
+        </tr>
+        {% endif %}        
+        {% endfor %}
+        {% else %}
+        <tr style="padding:10px;border-top:solid 1px #3388cc;">
+          <td>
+            등록된 환자가 없습니다.
           </td>
         </tr>
         {% endif %}

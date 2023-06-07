@@ -114,17 +114,17 @@ class Vital(BaseModel):
     male: float
     female: float  
 
-#class UserTable(Base):
-#    __tablename__ = 'user'
-#    id = Column(Integer, primary_key=True, autoincrement=True)
-#    name = Column(String(45), nullable=True)
-#    age = Column(Integer)
+class UserTable(Base):
+    __tablename__ = 'userinfo'
+    u_id = Column(String(45), primary_key=True)
+    u_pw = Column(String(45), nullable=False)
+    u_name = Column(String(45), nullable=False)
 
 
-#class User(BaseModel):
-#    id   : int
-#    name : str
-#    age  : int
+class User(BaseModel):
+    u_id: str
+    u_pw: str
+    u_name: str
 
 
 def main():

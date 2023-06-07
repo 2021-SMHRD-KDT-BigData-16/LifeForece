@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 
 # Database connection details
 hostname = "project-db-stu2.smhrd.com"
-port = 3307
+port = 3308
 username = "cgi_3_230524_2"
 password = "smhrd2"
 database = "cgi_3_230524_2"
