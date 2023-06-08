@@ -32,7 +32,7 @@
         },
         body: JSON.stringify({ id: patientId }),
       })
-        .then(response => response.json())  
+        .then(response => response.json())
         .then(data => {
           console.log(data.result_msg)
           location.reload();
@@ -117,12 +117,12 @@
 <body>
 
   <div style="padding:10px;">
-    <a href="/"></a>
+    <a href="/">LOGOUT</a>
   </div>
   <!--환자 추가하기 // 검색하기 버튼-->
-  
+
   <h4 style="padding:10px;">{{user}}님 로그인 하셨습니다.</h4>
- 
+
   <div style="margin:20px 0">
     <input type="text" id="newcase" placeholder="환자아이디" />
     <button onclick="postCase()">추가하기</button>
@@ -167,7 +167,7 @@
           <td align="center"><input type="text" id="cmt_{{case.p_id}}" value="{{case.p_cmt}}">
             <button onclick="putCase('{{case.p_id}}')">cmt</button>
           </td>
-          <td align="center"><a href="/cases/{{case.p_id}}"><button>보기</button></a></td>
+          <td align="center"><a href="/cases/{{case.p_id}}/?user_name={{user}}"><button>보기</button></a></td>
           <td align="center"><button onclick="delCase('{{case.p_id}}')">삭제</button></td>
         </tr>
         {% endfor %}
@@ -212,7 +212,7 @@
           <td align="center"><a href="/cases/{{case.p_id}}"><button>보기</button></a></td>
           <td align="center"><button onclick="delCase('{{case.p_id}}')">삭제</button></td>
         </tr>
-        {% endif %}        
+        {% endif %}
         {% endfor %}
         {% else %}
         <tr style="padding:10px;border-top:solid 1px #3388cc;">
@@ -224,9 +224,27 @@
       </table>
     </div>
   </div>
+<!--페이징 처리-->
+  <div>
+    <!-- Previous page link -->
+    {% if page > 1 %}
+    <a href="/cases?user={{user}}&page={{ page - 1 }}&rows_per_page={{ rows_per_page }}">Previous</a>
+    {% endif %}
 
+    <!-- Page numbers -->
+    {% for p in range(1, total_pages + 1) %}
+    {% if p == page %}
+    <strong>{{ p }}</strong>
+    {% else %}
+    <a href="/cases?user={{user}}&page={{ p }}&rows_per_page={{ rows_per_page }}">{{ p }}</a>
+    {% endif %}
+    {% endfor %}
 
-
+    <!-- Next page link -->
+    {% if page < total_pages %} 
+    <a href="/cases?user={{user}}&page={{ page + 1 }}&rows_per_page={{ rows_per_page }}">Next</a>
+    {% endif %}
+</div>
 
 </body>
 

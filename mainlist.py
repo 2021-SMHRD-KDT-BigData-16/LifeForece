@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Request, Form, Query
 from fastapi.responses import HTMLResponse, JSONResponse
-from starlette.responses import RedirectResponse
+#from starlette.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
@@ -12,9 +12,7 @@ import pretreatment as pre
 import pandas as pd
 import prediction as pred
 import sofa_mews
-#from fastapi.responses import JSONResponse
-# rom typing import List
-#import json
+
 
 templates = Jinja2Templates(directory="templates")
 
@@ -28,13 +26,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
  
-
+#------------바로 로그인 페이지로-----------
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
+
     context = {}
     context['request'] = request
     return templates.TemplateResponse("login.html", context)
 
+
+#----------로그인하기-----------------------
 @app.post("/login")
 async def login(request: Request, login_data: dict = Body(...)):
    
@@ -47,12 +48,12 @@ async def login(request: Request, login_data: dict = Body(...)):
     print(user.u_name)    
     
     return {'user': f"{username}"}
+
    
 # ------- 환자 검색하기 -------------------
-
-
 @app.get("/search_case", response_class=HTMLResponse)
 async def search_case_by_id(request: Request, p_id: int):
+
     context = {}
     case = session.query(CaseTable).filter_by(p_id=p_id).first()
     context['request'] = request
@@ -61,41 +62,57 @@ async def search_case_by_id(request: Request, p_id: int):
     session.close()
     return templates.TemplateResponse("user_search.html", context)
 
+
 # ----------casetable에 있는 환자 점수 목록 가져오기------------
-
 @app.get("/cases", response_class=HTMLResponse)
-async def read_cases(request: Request,user: str = Query(...)):
-    context = {}      
-    cases = session.query(CaseTable).all()
-    context['request'] = request
-    context['cases'] = cases 
-    context['user'] = user  
-    session.close()
+async def read_cases(request: Request,user: str = Query(...), page: int = 1, rows_per_page: int = 10):
+    
+    context = {}  
+    # 환자목록 불러오기         
+    cases_query = session.query(CaseTable) 
+    
+    # 페이징처리하기
+    start_index = (page - 1) * rows_per_page
+    end_index = start_index + rows_per_page   
+    total_rows = cases_query.count()    
+    total_pages = (total_rows + rows_per_page - 1) // rows_per_page
+    cases = cases_query.offset(
+        (page - 1) * rows_per_page).limit(rows_per_page).all()
 
+    # html에 보내기
+    context['request'] = request
+    context['cases'] = cases
+    context['user'] = user
+    context['page'] = page 
+    context['rows_per_page'] = rows_per_page
+    context['total_pages'] = total_pages
+
+    session.close()
     return templates.TemplateResponse("user_list.html", context)
 
 
-# ------환자 점수 목록에서 클릭시 환자의 casevital에 있는 값을 다른페이지에 가져오기----
+# ------환자 한명 자세히보기-----------------------------
 @app.get("/cases/{case_id}", response_class=HTMLResponse)
-async def read_case(request: Request, case_id: int, page: int = 1, rows_per_page: int = 10):
-    context = {}
+async def read_case(request: Request, user_name:str, case_id: int, page: int = 1, rows_per_page: int = 10):
+    
+    context = {}    
     # 환자 아이디와 LF 점수 를 담기 위해서 하나 선택해오기
     case = session.query(CaseTable).filter(CaseTable.p_id == case_id).first()
     context['case'] = case
+    context['user'] = user_name
 
     # 환자 한명의 바이탈 정보 담기
     vitals_query = session.query(CaseVital).filter(CaseVital.p_id == case_id)
-
+   
     # 페이징처리하기
     start_index = (page - 1) * rows_per_page
-    end_index = start_index + rows_per_page
-    # Calculate the total number of rows
-    total_rows = vitals_query.count()
-    # Calculate the total number of pages
+    end_index = start_index + rows_per_page   
+    total_rows = vitals_query.count()    
     total_pages = (total_rows + rows_per_page - 1) // rows_per_page
     vitals = vitals_query.offset(
         (page - 1) * rows_per_page).limit(rows_per_page).all()
-
+    
+    # html에 보내기
     context['vitals'] = vitals    
     context['request'] = request
     context['page'] = page
@@ -106,9 +123,9 @@ async def read_case(request: Request, case_id: int, page: int = 1, rows_per_page
     return templates.TemplateResponse("user_detail.html", context)
 
 
+#------------ 환자 추가하기-------------------------
 class MyData(BaseModel):
     id: int
-
 
 @app.post("/cases1")
 async def create_case(data: MyData):
@@ -126,15 +143,11 @@ async def create_case(data: MyData):
                       for column in columns} for vital in vitals])
 
     # 계산
-    df = df.drop(['v_sequence'], axis=1)
-    # print(df)
+    df = df.drop(['v_sequence'], axis=1)    
     # 전처리
     pre_df = pre.Pretreatment(df)
-
     # 모델 불러와서 예측
-    prediction = pred.Prediction(pre_df)
-
-    # print(prediction)
+    prediction = pred.Prediction(pre_df)  
     df_ms =  sofa_mews.pre_treat(df)
 
     #sofa와 mews 점수 추가
@@ -157,17 +170,14 @@ async def create_case(data: MyData):
 @app.put("/cases")
 async def modify_cases(p_id: int = Form(...), p_cmt: str = Form(...)):
 
-    case = session.query(CaseTable).filter(CaseTable.p_id == p_id).first()
-    #case.u_id = u_id
-    # case.p_id = p_id..
-    print("수정")
+    case = session.query(CaseTable).filter(CaseTable.p_id == p_id).first()    
     case.p_cmt = p_cmt
     session.commit()
 
     return {'result_msg': f"{p_id}"}
 
-# -------- 환자 삭제하기 -------------------
 
+# -------- 환자 삭제하기 -------------------
 
 @app.delete("/cases")
 async def delete_cases(p_id: int):
