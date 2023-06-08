@@ -20,8 +20,8 @@
             <!-- Navbar Brand-->
             <img src="/static/lifeforce_3.png" width="50px" style="margin-left: 10px;">
             <a class="navbar-brand ps-3" href="user_detail.html">LIFE FORCE</a>
-            <!-- Sidebar Toggle-->
-            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="/cases"><i class="fas fa-bars"></i></button>
+            <!-- LIST Toggle-->
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="LIST Toggle" href="/cases?user={{user}}"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
             <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
                 <div class="input-group">
@@ -34,14 +34,14 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">Settings</a></li>
-                        <li><a class="dropdown-item" href="#!">LOGIN</a></li>
+                        <li><a class="dropdown-item" href="/">LOGOUT</a></li>
                         <li><hr class="dropdown-divider" /></li>
                     </ul>
                 </li>
             </ul>
         </nav>
 
+        <!-- SCORE TABLE -->
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
@@ -50,48 +50,48 @@
                         <li class="breadcrumb-item active"></li>
                     </ol>
                     <div class="row1">
-                        <div class="col-xl-2 col-md-6">
+                        <div class="col-xl-3 col-md-6">
                             <div class="card bg-light text-gray mb-4">
                                 <div class="scorebox">
                                 <div class="card-body">LF SCORE</div>
-                                <div><h1 style="padding:10px;"><b>{{case.p_score}}</b></h1></div>
+                                <div><h1 style="padding:10px; text-align:right; margin-right: 60px;"><b>{{case.p_score}}</b></h1></div>
                                 </div>
                         </div>
                         </div>
-                        <div class="col-xl-2 col-md-6">
+                        <div class="col-xl-3 col-md-6">
                             <div class="card bg-light text-gray mb-4">
                                 <div class="scorebox">
                                 <div class="card-body">SOFA SOCRE</div>
-                                <div> <h1 style="padding:10px;"><b>{{case.p_SOFA}}</b></h1></div>
+                                <div> <h1 style="padding:10px; text-align:right; margin-right: 60px;"><b>{{case.p_SOFA}}</b></h1></div>
                             </div>
                             </div>
                         </div>
-                        <div class="col-xl-2 col-md-6">
+                        <div class="col-xl-3 col-md-6">
                             <div class="card bg-light text-gray mb-4">
                                 <div class="scorebox">
                                 <div class="card-body">MEWS SCORE</div>
-                                <div><h1 style="padding:10px;"><b>{{case.p_MEWS}}</b></h1></div>
+                                <div><h1 style="padding:10px; text-align:right; margin-right: 60px;"><b>{{case.p_MEWS}}</b></h1></div>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- 프로필 -->
                         <div class="col-xl-3 col-md-6">
                             <div class="card bg-light text-gray mb-8">
                                 <div class="card-body">PROFILE</div>
                                 <div class="profile">
-                                <img src="/static/icon1.png" width="300px" style="margin-left: 35px">
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                <table class="tg" style="table-layout: fixed; width: 291px">
+                                <img src="/static/icon1.png" width="250px" style="margin-left: 90px">
+                            </div>
+                                <div class="card-footer d-flex align-items-center justify-content-between" style="height: 330px;">
+                                <table class="tg" style="table-layout: fixed; width: 291px; margin-left:50px;">
                                     <colgroup>
-                                        <col style="width: 63px">
+                                        <col style="width: 75px">
                                         <col style="width: 228px">
                                     </colgroup>
-                                    <thead>
                                         <tr>
                                             <th class="tg-o40d">PID</th>
                                             <td class="tg-o40d">{{case.p_id}}</td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
                                         <tr>
                                             <th class="tg-o40d">NAME</th>
                                             <td class="tg-o40d"></td>
@@ -121,7 +121,6 @@
                                         외과ICU
                                         {% endif %}</td> 
                                     </tr>
-                                    </tbody>
                                 </table>
                                 </div>
                                 </div>
@@ -130,40 +129,29 @@
                     </div>
                     </div>
                     </div>
-                    </div>
-
-
-
-    <div style="padding:10px;">
-        <a href="/">LOGOUT</a>
-        <a href="/cases?user={{user}}">LIST</a>
-    </div>
-
+                    
    <!-- 그래프 -->
    <div class="row">
-    <div class="col-xl-7">
+    <div class="col-xl-8">
         <div class="card mb-6">
             <div class="card-header">
                 <i class="fas fa-chart-area me-1"></i>
                 LIFE FORCE CHART
             </div>
-            <div class="card-body"><canvas id="myAreaChart" width="500%" height="500%"></canvas>
+            <div class="card-body"><canvas id="myAreaChart" width="7000%" height="2000%"></canvas>
             </div>
         </div>
     </div>
-
-
-
     </div>
 
-    <!-- DATA 테이블 -->
+    <!-- DATA TABLE -->
     <div class="card mb-3">
         <div class="card-header">
             <i class="fas fa-table me-1"></i>
             LIFE FORCE DATATABLE
         </div>
         <div id="vitaltable">
-            <table class="tg">
+            <table class="tg" style="table-layout: fixed; margin: auto">
                 <thead>
                   <tr>
                     <th class="tg-esor">rec_time</th>
@@ -199,8 +187,6 @@
                   </tr>
                 </thead>
                 <tbody>
-
-          
 
             <!--환자 vital 표 나오는 곳-->
             {% for vital in vitals %}
@@ -246,15 +232,16 @@
                 </td>
             </tr>
             {% endif %}
-</tbody>
+        </tbody>
         </table>
     </div>
+
     <!-- Display navigation links or buttons for paging -->
     <div>
     
         <!-- Previous page link -->
         {% if page > 1 %}
-        <a href="/cases/{{case.p_id}}/?user_name={{user}}&page={{ page - 1 }}&rows_per_page={{ rows_per_page }}">Previous</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/cases/{{case.p_id}}/?user_name={{user}}&page={{ page - 1 }}&rows_per_page={{ rows_per_page }}">Previous</a>
         {% endif %}
     
         <!-- Page numbers -->
@@ -273,20 +260,12 @@
     </div>
 </div>
 </div>
-   
-   
-   
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="/static/scripts.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
 <script src="/static/chart-area-demo.js"></script>
-<script src="/static/chart-bar-demo.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-<script src="/static/datatables-demo.js"></script>
    
-   
-   
-
 </body>
-
 </html>

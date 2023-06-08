@@ -11,8 +11,8 @@ var myLineChart = new Chart(ctx, {
     datasets: [{
       label: "Sessions",
       lineTension: 0.3,
-      backgroundColor: "rgba(2,117,216,0.2)",
-      borderColor: "rgba(2,117,216,1)",
+      backgroundColor: "rgba(113,147,240,0.2)",
+      borderColor: "rgba(72,101,181,1)",
       pointRadius: 5,
       pointBackgroundColor: "rgba(2,117,216,1)",
       pointBorderColor: "rgba(255,255,255,0.8)",
