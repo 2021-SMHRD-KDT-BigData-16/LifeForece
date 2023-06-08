@@ -4,10 +4,22 @@ Chart.defaults.global.defaultFontColor = '#292b2c';
 
 // Area Chart Example
 var ctx = document.getElementById("myAreaChart");
+var RRElements = document.getElementsByClassName("RR");
+var RRs = Array.from(RRElements).map(element => element.innerText);
+var BTElements = document.getElementsByClassName("BT");
+var BTs = Array.from(BTElements).map(element => element.innerText);
+
+var rectimeElements = document.getElementsByClassName("rectime");
+var rectimes = Array.from(rectimeElements).map(element => element.innerText);
+console.log(RRElements)
+console.log(RRs)
+console.log(rectimeElements)
+console.log(rectimes)
+
 var myLineChart = new Chart(ctx, {
   type: 'line',
   data: {
-    labels: ["Mar 1", "Mar 2", "Mar 3", "Mar 4", "Mar 5", "Mar 6", "Mar 7", "Mar 8", "Mar 9", "Mar 10", "Mar 11", "Mar 12", "Mar 13"],
+    labels: rectimes,
     datasets: [{
       label: "Sessions",
       lineTension: 0.3,
@@ -20,7 +32,7 @@ var myLineChart = new Chart(ctx, {
       pointHoverBackgroundColor: "rgba(2,117,216,1)",
       pointHitRadius: 50,
       pointBorderWidth: 2,
-      data: [10000, 30162, 26263, 18394, 18287, 28682, 31274, 33259, 25849, 24159, 32651, 31984, 38451],
+      data: BTs,
     }],
   },
   options: {
@@ -38,8 +50,8 @@ var myLineChart = new Chart(ctx, {
       }],
       yAxes: [{
         ticks: {
-          min: 0,
-          max: 40000,
+          min: 35,
+          max: 42,
           maxTicksLimit: 5
         },
         gridLines: {
