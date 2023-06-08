@@ -42,7 +42,7 @@
   --bs-danger: #dc3545;
   --bs-light: #f8f9fa;
   --bs-dark: #212529;
-  --bs-lifeforce: #E04B5A;
+  --bs-lifeforce: #BDD7EE;
   --bs-primary-rgb: 13, 110, 253;
   --bs-secondary-rgb: 108, 117, 125;
   --bs-success-rgb: 25, 135, 84;
@@ -53,8 +53,7 @@
   --bs-dark-rgb: 33, 37, 41;
   --bs-white-rgb: 255, 255, 255;
   --bs-black-rgb: 0, 0, 0;
-  --bs-lifeforce-rgb: 224, 75, 90;
-  --bs-lifeforce-rgba: 0, 0, 0, 0.8;
+  --bs-lifeforce-rgb: 189, 215, 238;
   --bs-body-color-rgb: 33, 37, 41;
   --bs-body-bg-rgb: 255, 255, 255;
   --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -80,7 +79,7 @@
   --bs-link-hover-color: #535252;
   --bs-code-color: #d63384;
   --bs-highlight-bg: #fff3cd;
-  --bs-border-color-line: #D1899F;
+  --bs-border-color-line: #89aaf1;
 }
 
 *,
@@ -1488,8 +1487,9 @@ progress {
     width: 50%;
   }
   .col-xl-7 {
-    flex: 0 0 auto;
     width: 54.5%;
+    display: flex;
+
   }
   .col-xl-8 {
     flex: 0 0 auto;

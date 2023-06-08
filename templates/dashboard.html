@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>LIFE FORCE</title>
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+        <link href="css/styles.css" rel="stylesheet" />
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    </head>
+    <body class="sb-nav-fixed">
+        <nav class="sb-topnav navbar navbar-expand navbar-lifeforce bg-lifeforce">
+            <!-- Navbar Brand-->
+            <img src="./assets/img/lifeforce_3.png" width="50px" style="margin-left: 10px;">
+            <a class="navbar-brand ps-3" href="dashboard.html">LIFE FORCE</a>
+            <!-- Sidebar Toggle-->
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+            <!-- Navbar Search-->
+            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+                <div class="input-group">
+                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+                </div>
+            </form>
+            <!-- Navbar-->
+            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#!">Settings</a></li>
+                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="#!">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+           <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4"></h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active"></li>
+                        </ol>
+                        <div class="row1">
+                            <div class="col-xl-2 col-md-6">
+                                <div class="card bg-light text-gray mb-4">
+                                    <div class="scorebox">
+                                    <div class="card-body">LF SCORE</div>
+                                    <div></div>
+                                    </div>
+                            </div>
+                            </div>
+                            <div class="col-xl-2 col-md-6">
+                                <div class="card bg-light text-gray mb-4">
+                                    <div class="scorebox">
+                                    <div class="card-body">SOFA SOCRE</div>
+                                    <div></div>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-2 col-md-6">
+                                <div class="card bg-light text-gray mb-4">
+                                    <div class="scorebox">
+                                    <div class="card-body">MEWS SCORE</div>
+                                    <div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-light text-gray mb-8">
+                                    <div class="card-body">PROFILE</div>
+                                    <div class="profile">
+                                    <img src="./assets/img/icon1.png" width="300px" style="margin-left: 35px">
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <table class="tg" style="table-layout: fixed; width: 291px">
+                                        <colgroup>
+                                            <col style="width: 63px">
+                                            <col style="width: 228px">
+                                        </colgroup>
+                                        <thead>
+                                            <tr>
+                                                <th class="tg-o40d">PID</th>
+                                                <td class="tg-o40d"></td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th class="tg-o40d">NAME</th>
+                                                <td class="tg-o40d"></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="tg-o40d">AGE</th>
+                                                <td class="tg-o40d"></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="tg-o40d">SEX</th>
+                                                <td class="tg-o40d"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        </div>
+
+                        
+                        <div class="row">
+                            <div class="col-xl-7">
+                                <div class="card mb-6">
+                                    <div class="card-header">
+                                        <i class="fas fa-chart-area me-1"></i>
+                                        LIFE FORCE CHART
+                                    </div>
+                                    <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+                                LIFE FORCE DATATABLE
+                            </div>
+                            <div class="card-body">
+                                <table class="tg">
+                                    <thead>
+                                      <tr>
+                                        <th class="tg-esor">rec_time</th>
+                                        <th class="tg-esor">ALP</th>
+                                        <th class="tg-esor">Albumin</th>
+                                        <th class="tg-esor">BUN</th>
+                                        <th class="tg-esor">Bilirubin</th>
+                                        <th class="tg-esor">Cholesterol</th>
+                                        <th class="tg-esor">Creatinine</th>
+                                        <th class="tg-esor">FiO2</th>
+                                        <th class="tg-esor">GCS</th>
+                                        <th class="tg-esor">Glucose</th>
+                                        <th class="tg-esor">HCO3</th>
+                                        <th class="tg-esor">HCT</th>
+                                        <th class="tg-esor">HR</th>
+                                        <th class="tg-esor">K</th>
+                                        <th class="tg-esor">Lactate</th>
+                                        <th class="tg-esor">Mg</th>
+                                        <th class="tg-esor">Na</th>
+                                        <th class="tg-esor">PaCO2</th>
+                                        <th class="tg-esor">PaO2</th>
+                                        <th class="tg-esor">Platelets</th>
+                                        <th class="tg-esor">RR</th>
+                                        <th class="tg-esor">SPO2</th>
+                                        <th class="tg-esor">BT</th>
+                                        <th class="tg-esor">Urine</th>
+                                        <th class="tg-esor">WBC</th>
+                                        <th class="tg-esor">pH</th>
+                                        <th class="tg-esor">MechVent</th>
+                                        <th class="tg-esor">SBP</th>
+                                        <th class="tg-esor">DBP</th>
+                                        <th class="tg-esor">MBP</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <td class="tg-yku4"></td>
+                                        <td class="tg-yku4"></td>
+                                        <td class="tg-yku4"></td>
+                                        <td class="tg-yku4"></td>
+                                        <td class="tg-yku4"></td>
+                                        <td class="tg-yku4"></td>
+                                        <td class="tg-yku4"></td>
+                                        <td class="tg-yku4"></td>
+                                        <td class="tg-yku4"></td>
+                                        <td class="tg-yku4"></td>
+                                        <td class="tg-yku4"></td>
+                                        <td class="tg-yku4"></td>
+                                        <td class="tg-yku4"></td>
+                                        <td class="tg-yku4"></td>
+                                        <td class="tg-yku4"></td>
+                                        <td class="tg-yku4"></td>
+                                        <td class="tg-yku4"></td>
+                                        <td class="tg-yku4"></td>
+                                        <td class="tg-yku4"></td>
+                                        <td class="tg-yku4"></td>
+                                        <td class="tg-yku4"></td>
+                                        <td class="tg-yku4"></td>
+                                        <td class="tg-yku4"></td>
+                                        <td class="tg-yku4"></td>
+                                        <td class="tg-yku4"></td>
+                                        <td class="tg-yku4"></td>
+                                        <td class="tg-yku4"></td>
+                                        <td class="tg-yku4"></td>
+                                        <td class="tg-yku4"></td>
+                                        <td class="tg-yku4"></td>
+                                      </tr>
+                                    </tbody>
+                                    </table>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">LIFE FORCE</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="js/scripts.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="/dashboard/assets/demo/chart-area-demo.js"></script>
+        <script src="/dashboard/assets/demo/chart-bar-demo.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+        <script src="js/datatables-simple-demo.js"></script>
+    </body>
+</html>

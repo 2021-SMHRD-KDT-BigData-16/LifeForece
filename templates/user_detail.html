@@ -2,77 +2,205 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>사용자 - detail</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>LIFE FORCE</title>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+    <link href="/static/styles.css" rel="stylesheet" />
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+   
 </head>
 
-<body>
+<body>    
+    <body class="sb-nav-fixed">
+        <nav class="sb-topnav navbar navbar-expand navbar-lifeforce bg-lifeforce">
+            <!-- Navbar Brand-->
+            <img src="/static/lifeforce_3.png" width="50px" style="margin-left: 10px;">
+            <a class="navbar-brand ps-3" href="user_detail.html">LIFE FORCE</a>
+            <!-- Sidebar Toggle-->
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="/cases"><i class="fas fa-bars"></i></button>
+            <!-- Navbar Search-->
+            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+                <div class="input-group">
+                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+                </div>
+            </form>
+            <!-- Navbar-->
+            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#!">Settings</a></li>
+                        <li><a class="dropdown-item" href="#!">LOGIN</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid px-4">
+                    <h1 class="mt-4"></h1>
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item active"></li>
+                    </ol>
+                    <div class="row1">
+                        <div class="col-xl-2 col-md-6">
+                            <div class="card bg-light text-gray mb-4">
+                                <div class="scorebox">
+                                <div class="card-body">LF SCORE</div>
+                                <div><h1 style="padding:10px;"><b>{{case.p_score}}</b></h1></div>
+                                </div>
+                        </div>
+                        </div>
+                        <div class="col-xl-2 col-md-6">
+                            <div class="card bg-light text-gray mb-4">
+                                <div class="scorebox">
+                                <div class="card-body">SOFA SOCRE</div>
+                                <div> <h1 style="padding:10px;"><b>{{case.p_SOFA}}</b></h1></div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-md-6">
+                            <div class="card bg-light text-gray mb-4">
+                                <div class="scorebox">
+                                <div class="card-body">MEWS SCORE</div>
+                                <div><h1 style="padding:10px;"><b>{{case.p_MEWS}}</b></h1></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card bg-light text-gray mb-8">
+                                <div class="card-body">PROFILE</div>
+                                <div class="profile">
+                                <img src="/static/icon1.png" width="300px" style="margin-left: 35px">
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                <table class="tg" style="table-layout: fixed; width: 291px">
+                                    <colgroup>
+                                        <col style="width: 63px">
+                                        <col style="width: 228px">
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                            <th class="tg-o40d">PID</th>
+                                            <td class="tg-o40d">{{case.p_id}}</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th class="tg-o40d">NAME</th>
+                                            <td class="tg-o40d"></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="tg-o40d">AGE</th>
+                                            <td class="tg-o40d">{{vitals[0].age}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="tg-o40d">SEX</th>
+                                            <td class="tg-o40d">{{"여성" if vitals[0].female==1 else "남성"}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="tg-o40d">cmt</th>
+                                            <td class="tg-o40d">{{case.p_cmt}}</td>
+                                        </tr>
+                                        <tr>
+                                        {% if vitals %}
+                                        <th class="tg-o40d">ICUtpye</th>
+                                        <td class="tg-o40d">{% if vitals[0].ICUtype == 1 %}
+                                        관상치료실
+                                        {% elif vitals[0].ICUtype == 2 %}
+                                        심장외과회복실
+                                        {% elif vitals[0].ICUtype == 3 %}
+                                        의료 ICU
+                                        {% elif vitals[0].ICUtype == 4 %}
+                                        외과ICU
+                                        {% endif %}</td> 
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+
+
 
     <div style="padding:10px;">
         <a href="/">LOGOUT</a>
         <a href="/cases?user={{user}}">LIST</a>
     </div>
 
-    <h1 style="padding:10px;"><b>환자:{{case.p_id}}</b> </h1>
-    <h1 style="padding:10px;"><b>LFscore:{{case.p_score}}</b> </h1>
-    <h1 style="padding:10px;"><b>SOFAscore:{{case.p_SOFA}}</b> </h1>
-    <h1 style="padding:10px;"><b>MEWSscore:{{case.p_MEWS}}</b> </h1>
-    <h1 style="padding:10px;"><b>CMT:{{case.p_cmt}}</b> </h1>
+   <!-- 그래프 -->
+   <div class="row">
+    <div class="col-xl-7">
+        <div class="card mb-6">
+            <div class="card-header">
+                <i class="fas fa-chart-area me-1"></i>
+                LIFE FORCE CHART
+            </div>
+            <div class="card-body"><canvas id="myAreaChart" width="500%" height="500%"></canvas>
+            </div>
+        </div>
+    </div>
 
 
 
     </div>
 
-    <div id="vitaltable">
-        <table width="100%" border="1" cellpadding="0" cellspacing="0">
-            <tr>
+    <!-- DATA 테이블 -->
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            LIFE FORCE DATATABLE
+        </div>
+        <div id="vitaltable">
+            <table class="tg">
+                <thead>
+                  <tr>
+                    <th class="tg-esor">rec_time</th>
+                    <th class="tg-esor">ALP</th>
+                    <th class="tg-esor">Albumin</th>
+                    <th class="tg-esor">BUN</th>
+                    <th class="tg-esor">Bilirubin</th>
+                    <th class="tg-esor">Cholesterol</th>
+                    <th class="tg-esor">Creatinine</th>
+                    <th class="tg-esor">FiO2</th>
+                    <th class="tg-esor">GCS</th>
+                    <th class="tg-esor">Glucose</th>
+                    <th class="tg-esor">HCO3</th>
+                    <th class="tg-esor">HCT</th>
+                    <th class="tg-esor">HR</th>
+                    <th class="tg-esor">K</th>
+                    <th class="tg-esor">Lactate</th>
+                    <th class="tg-esor">Mg</th>
+                    <th class="tg-esor">Na</th>
+                    <th class="tg-esor">PaCO2</th>
+                    <th class="tg-esor">PaO2</th>
+                    <th class="tg-esor">Platelets</th>
+                    <th class="tg-esor">RR</th>
+                    <th class="tg-esor">SPO2</th>
+                    <th class="tg-esor">BT</th>
+                    <th class="tg-esor">Urine</th>
+                    <th class="tg-esor">WBC</th>
+                    <th class="tg-esor">pH</th>
+                    <th class="tg-esor">MechVent</th>
+                    <th class="tg-esor">SBP</th>
+                    <th class="tg-esor">DBP</th>
+                    <th class="tg-esor">MBP</th>
+                  </tr>
+                </thead>
+                <tbody>
 
-                <th align="center">rec_time</th>
-                <th align="center">ALP</th>
-                <th align="center">Albumin</th>
-                <th align="center">BUN</th>
-                <th align="center">Bilirubin</th>
-                <th align="center">Cholesterol</th>
-                <th align="center">Creatinine</th>
-                <th align="center">FiO2</th>
-                <th align="center">GCS</th>
-                <th align="center">Glucose</th>
-                <th align="center">HCO3</th>
-                <th align="center">HCT</th>
-                <th align="center">HR</th>
-                <th align="center">K</th>
-                <th align="center">Lactate</th>
-                <th align="center">Mg</th>
-                <th align="center">Na</th>
-                <th align="center">PaCO2</th>
-                <th align="center">PaO2</th>
-                <th align="center">Platelets</th>
-                <th align="center">RR</th>
-                <th align="center">SPO2</th>
-                <th align="center">BT</th>
-                <th align="center">Urine</th>
-                <th align="center">WBC</th>
-                <th align="center">pH</th>
-                <th align="center">MechVent</th>
-                <th align="center">SBP</th>
-                <th align="center">DBP</th>
-                <th align="center">MBP</th>
-            </tr>
-
-            {% if vitals %}
-
-            <!--환자 정보 나오는 곳-->
-            나이: {{vitals[0].age}}
-            성별: {{"여성" if vitals[0].female==1 else "남성"}}
-            ICUtpye: {% if vitals[0].ICUtype == 1 %}
-            관상치료실
-            {% elif vitals[0].ICUtype == 2 %}
-            심장외과회복실
-            {% elif vitals[0].ICUtype == 3 %}
-            의료 ICU
-            {% elif vitals[0].ICUtype == 4 %}
-            외과ICU
-            {% endif %}
+          
 
             <!--환자 vital 표 나오는 곳-->
             {% for vital in vitals %}
@@ -109,7 +237,7 @@
                 <td align="center">{{vital.DBP}}</td>
                 <td align="center">{{vital.MBP}}</td>
 
-            </tr>
+            
             {% endfor %}
             {% else %}
             <tr style="padding:10px;border-top:solid 1px #3388cc;">
@@ -118,16 +246,17 @@
                 </td>
             </tr>
             {% endif %}
-
+</tbody>
         </table>
     </div>
     <!-- Display navigation links or buttons for paging -->
     <div>
+    
         <!-- Previous page link -->
         {% if page > 1 %}
         <a href="/cases/{{case.p_id}}/?user_name={{user}}&page={{ page - 1 }}&rows_per_page={{ rows_per_page }}">Previous</a>
         {% endif %}
-
+    
         <!-- Page numbers -->
         {% for p in range(1, total_pages + 1) %}
         {% if p == page %}
@@ -136,12 +265,27 @@
         <a href="/cases/{{case.p_id}}/?user_name={{user}}&page={{ p }}&rows_per_page={{ rows_per_page }}">{{ p }}</a>
         {% endif %}
         {% endfor %}
-
+    
         <!-- Next page link -->
         {% if page < total_pages %} 
         <a href="/cases/{{case.p_id}}/?user_name={{user}}&page={{ page + 1 }}&rows_per_page={{ rows_per_page }}">Next</a>
         {% endif %}
     </div>
+</div>
+</div>
+   
+   
+   
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="/static/scripts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+<script src="/static/chart-area-demo.js"></script>
+<script src="/static/chart-bar-demo.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+<script src="/static/datatables-demo.js"></script>
+   
+   
+   
 
 </body>
 
