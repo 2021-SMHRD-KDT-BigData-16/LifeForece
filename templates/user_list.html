@@ -3,6 +3,9 @@
 
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="/static/user_list.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <title>Case list</title>
   <!--<script type="module" src="your-script.js"></script>-->
   <style>
@@ -14,7 +17,14 @@
     /* Style for active tab */
     .active {
       display: block;
-    }
+    } 
+
+    @font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
   </style>
 
   <!---->
@@ -100,85 +110,117 @@
   </script>
   <!--탭 스크립트-->
 
-  <script>
-    function showTab(tabId) {
-      var tabContent = document.getElementsByClassName("tab-content");
-      for (var i = 0; i < tabContent.length; i++) {
-        tabContent[i].style.display = "none";
-      }
-
-      document.getElementById(tabId).style.display = "block";
+<script>
+  function showTab(tabId) {
+    var tabContent = document.getElementsByClassName("tab-content");
+    for (var i = 0; i < tabContent.length; i++) {
+      tabContent[i].style.display = "none";
     }
-  </script>
+
+    document.getElementById(tabId).style.display = "block";
+  }
+</script>
 
 
 </head>
 
 <body>
 
-  <div style="padding:10px;">
-    <a href="/">LOGOUT</a>
-  </div>
+
+
   <!--환자 추가하기 // 검색하기 버튼-->
 
-  <h4 style="padding:10px;">{{user}}님 로그인 하셨습니다.</h4>
-
-  <div style="margin:20px 0">
-    <input type="text" id="newcase" placeholder="환자아이디" />
-    <button onclick="postCase()">추가하기</button>
+  <div class="header">
+    <nav class="navbar">
+      <img class="nav_logo" src="/static/Logo_투명.png">
+      <!-- <img class = "logo_letter" src="/static/Logo_letter.png"> -->
+      <h2 style="margin-left : 100px; margin-top : -56px; margin-bottom : 20px; color : #fff;">LifeForce</h2>
+      
+      <div class="logout_btn">
+        <a href="/">로그아웃</a>
+      </div>
+    
+    </nav>
   </div>
-  <div style="margin: 20px 0">
-    <input type="number" id="p_id" placeholder="P_ID">
-    <button onclick="searchCase()">Search</button>
+  
+
+
+  <!--환자 추가하기 // 검색하기 버튼-->
+  <div class="Login_welcome">
+    <img src="/static/person-circle.svg" class = "profile">
+    <h4 class="Welcome_letter">{{user}}</h4>
   </div>
 
 
 
 
 
+<div class="btn_container">
+  <button id="tabButton1" onclick="showTab('tabContent1'), change_btn(event)" class="all_btn">All</button>
+  <h4 style="font-size : 25px; margin-left : 16px; margin-top : 58px; color : #9593ff">|</h4>
+  <button id="tabButton2" onclick="showTab('tabContent2')" class="detected_btn">Detected</button>
 
-  <button id="tabButton1" onclick="showTab('tabContent1')">all</button>
-  <button id="tabButton2" onclick="showTab('tabContent2')">detected</button>
+
+ <div class="add_container">
+<input type="text" id="newcase" placeholder="환자아이디" class="add_input" />
+
+<button onclick="postCase()" class="add_btn"><img src="/static/plus.svg" class="add_logo"></button>
+<!--  </div> -->
+<!--  <div class="search_container"> -->
+<input type="number" id="p_id" placeholder="P_ID" class="search_input">
+
+<button onclick="searchCase()" class="search_btn"><img src="/static/search.svg" class="search_logo"></button>
+ </div>
+</div>
+
 
 
   <!--환자 테이블 나오는 곳-->
   <div id="tabContent1" class="tab-content" style="display: block;">
     <div id="casetable">
-      <table width="100%" border="1" cellpadding="0" cellspacing="0">
-        <tr>
-          <th>환자아이디</th>
-          <th>환자이름</th>
-          <th>LF점수</th>
-          <th>SOFA점수</th>
-          <th>MEWS점수</th>
-          <th>코멘트</th>
-          <th>자세히보기</th>
-          <th>삭제</th>
-        </tr>
+      <!-- 새로 추가한 테이블(수정) -->
+      <table cellpadding="0;" class="rwd-table">
+        <tbody>
+          <tr class="tab1_tr">
+            <th>P_ID</th>
+            <th>Name</th>
+            <th>LFS</th>
+            <th>SOFA</th>
+            <th>MEWS</th>
+            <th style="width : 500px;">Comment</th>
+            <th>Detail</th>
+            <th>Delete</th>
+          </tr>
+          {% if cases %}
+          {% for case in cases %}
+          <tr style="padding:10px;height:45px;" id="casebox_{{case.u_id}}">
+            <td align="center" id="pid_{{case.p_id}}">{{ case.p_id }}</td>
+            <td align="center">이름</td>
+            <td align="center">{{case.p_score}}</td>
+            <td align="center">{{case.p_SOFA}}</td>
+            <td align="center">{{case.p_MEWS}}</td>
+            <td align="center">
+              <input type="text" class="cmt_input" id="cmt_{{case.p_id}}" value="{{case.p_cmt}}">
+              <button onclick="putCase('{{case.p_id}}')" class="cmt_btn"><img src="/static/pencil-square.svg"
+                  class="cmt_logo"></button>
+            </td>
+            <td align="center"><a href="/cases/{{case.p_id}}/?user_name={{user}}"><button style="width : 50px; border-radius : 10px;"
+                  class="detail_btn"><img src="/static/eye.svg" alt="" class="detail_logo"></button></a></td>
+            <td align="center"><button onclick="delCase('{{case.p_id}}')" class="delete_btn"><img src="/static/trash3.svg"
+                  class="delete_logo"></button></td>
+            </tr>
+          {% endfor %}
+          {% else %}
+          <tr style="padding:10px;border-top:solid 1px #3388cc;">
+            <td>
+              No case...
+            </td>
+          </tr>
+          {% endif %}
+        </table>
+         
+          
 
-        {% if cases %}
-        {% for case in cases %}
-        <tr style="padding:10px;height:45px;" id="casebox_{{case.u_id}}">
-          <td align="center" id="pid_{{case.p_id}}">{{ case.p_id }}</td>
-          <td align="center">이름</td>
-          <td align="center">{{case.p_score}}</td>
-          <td align="center">{{case.p_SOFA}}</td>
-          <td align="center">{{case.p_MEWS}}</td>
-          <td align="center"><input type="text" id="cmt_{{case.p_id}}" value="{{case.p_cmt}}">
-            <button onclick="putCase('{{case.p_id}}')">cmt</button>
-          </td>
-          <td align="center"><a href="/cases/{{case.p_id}}/?user_name={{user}}"><button>보기</button></a></td>
-          <td align="center"><button onclick="delCase('{{case.p_id}}')">삭제</button></td>
-        </tr>
-        {% endfor %}
-        {% else %}
-        <tr style="padding:10px;border-top:solid 1px #3388cc;">
-          <td>
-            No case...
-          </td>
-        </tr>
-        {% endif %}
-      </table>
     </div>
   </div>
 
@@ -209,7 +251,7 @@
           <td align="center"><input type="text" id="cmt_{{case.p_id}}" value="{{case.p_cmt}}">
             <button onclick="putCase('{{case.p_id}}')">cmt</button>
           </td>
-          <td align="center"><a href="/cases/{{case.p_id}}"><button>보기</button></a></td>
+          <td align="center"><a href="/cases/{{case.p_id}}?user_name={{user}}"><button>보기</button></a></td>
           <td align="center"><button onclick="delCase('{{case.p_id}}')">삭제</button></td>
         </tr>
         {% endif %}
@@ -224,25 +266,31 @@
       </table>
     </div>
   </div>
+
+
+
+
+
+
 <!--페이징 처리-->
-  <div>
+  <div class = "pagination">
     <!-- Previous page link -->
     {% if page > 1 %}
-    <a href="/cases?user={{user}}&page={{ page - 1 }}&rows_per_page={{ rows_per_page }}">Previous</a>
+    <a href="/cases?user={{user}}&page={{ page - 1 }}&rows_per_page={{ rows_per_page }}">◀</a>
     {% endif %}
 
     <!-- Page numbers -->
     {% for p in range(1, total_pages + 1) %}
     {% if p == page %}
-    <strong>{{ p }}</strong>
+    <strong class = "page_num">{{ p }}</strong>
     {% else %}
-    <a href="/cases?user={{user}}&page={{ p }}&rows_per_page={{ rows_per_page }}">{{ p }}</a>
+    <a href="/cases?user={{user}}&page={{ p }}&rows_per_page={{ rows_per_page }}" class = "page_num">{{ p }}</a>
     {% endif %}
     {% endfor %}
 
     <!-- Next page link -->
     {% if page < total_pages %} 
-    <a href="/cases?user={{user}}&page={{ page + 1 }}&rows_per_page={{ rows_per_page }}">Next</a>
+    <a href="/cases?user={{user}}&page={{ page + 1 }}&rows_per_page={{ rows_per_page }}">▶</a>
     {% endif %}
 </div>
 
