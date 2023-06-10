@@ -1,0 +1,522 @@
+
+
+*{
+    margin : 0;
+    padding : 0;
+    font-family: 'Pretendard-Regular';
+}
+
+body {
+    background-color: #fff;
+}
+
+.tab-content {
+    display: none;
+}
+
+.active {
+    display: block;
+}
+
+.header {
+    align-items: center; 
+    /* background-color: rgba(224, 75, 90, 0.5); */
+    background-color : #BDD7EE;
+    height : 75px;
+}
+
+.nav_logo {
+    width : 50px;
+    margin-left : 20px;
+    padding : 10px;
+}
+
+.logo_letter {
+    /*width : 450px;*/
+    margin-left : -120px;
+    margin-bottom : 15px; 
+}
+
+.Login_welcome {
+    background-color: transparent;
+    width : 400px;
+    margin-left : 1400px;
+    height : 50px;
+    text-align: center;
+    margin-top : -55px; 
+}
+
+.Welcome_letter {
+  color : #fff;  
+  margin-top : -20px;
+}
+
+.letter_container {
+    position: relative;
+    border : 1px solid black;
+    margin-left : 100px;
+    margin-bottom : 20px;
+    margin-top : 20px;
+    background-color: transparent;
+    width : 400px;
+}
+
+.Logo_message {
+    margin-top : -40px;
+}
+
+/* .tab1_table {
+    margin-left : 60px;
+    margin-top : 20px;
+    border-radius : 5px;
+    border : 1px;
+    width : 1800px;
+}
+
+
+
+.tab2_table {
+    margin-left: 60px;
+    margin-top: 20px;
+}
+
+.tab1_tr {
+    background: #BDD7EE;
+    color : #6c78bb;
+}*/
+
+.cmt_input {
+    width : 400px;
+    
+} 
+
+/* 새로 추가한 테이블 css */
+
+.rwd-table {
+    margin : auto;
+    min-width: 300px;
+    max-width: 100%;
+    border-collapse: collapse;
+    margin-bottom : 20px;
+    width : 1500px;
+
+}
+
+.rwd-table tr:first-child {
+    border-top: none;
+    background: #a1bff7;
+    color: #fff;
+    height : 70px;
+}
+
+.rwd-table tr {
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    background-color: #fff;
+}
+
+.rwd-table tr:nth-child(odd):not(:first-child) {
+    background-color: #fff;
+}
+
+.rwd-table th {
+    display: none;
+}
+
+.rwd-table td {
+    display: block;
+}
+
+.rwd-table td:first-child {
+    margin-top: .5em;
+}
+
+.rwd-table td:last-child {
+    margin-bottom: .5em;
+}
+
+.rwd-table td:before {
+    content: attr(data-th) ": ";
+    font-weight: bold;
+    width: 120px;
+    display: inline-block;
+    color: #000;
+}
+
+.rwd-table th,
+.rwd-table td {
+    text-align: left;
+}
+
+.rwd-table {
+    color: #333;
+    border-radius: .4em;
+    overflow: hidden;
+}
+
+.rwd-table tr {
+    border-color: #bfbfbf;
+}
+
+.rwd-table th,
+.rwd-table td {
+    padding: .5em 1em;
+    text-align: center;
+}
+
+@media screen and (max-width: 601px) {
+    .rwd-table tr:nth-child(2) {
+        border-top: none;
+    }
+}
+
+@media screen and (min-width: 600px) {
+    .rwd-table tr:hover:not(:first-child) {
+        background-color: #faf1e4;
+    }
+
+    .rwd-table td:before {
+        display: none;
+    }
+
+    .rwd-table th,
+    .rwd-table td {
+        display: table-cell;
+        padding: .25em .5em;
+    }
+
+    .rwd-table th:first-child,
+    .rwd-table td:first-child {
+        padding-left: 0;
+    }
+
+    .rwd-table th:last-child,
+    .rwd-table td:last-child {
+        padding-right: 0;
+    }
+
+    .rwd-table th,
+    .rwd-table td {
+        padding: 1em !important;
+    }
+}
+
+
+/* THE END OF THE IMPORTANT STUFF */
+
+/* Basic Styling */
+
+h1 {
+    text-align: center;
+    font-size: 2.4em;
+    color: #f2f2f2;
+}
+
+.container {
+    display: block;
+    text-align: center;
+}
+
+h3 {
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    font-size: 1.5em;
+    color: #cecece;
+}
+
+h3:before {
+    content: "\25C0";
+    position: absolute;
+    left: -50px;
+    -webkit-animation: leftRight 2s linear infinite;
+    animation: leftRight 2s linear infinite;
+}
+
+h3:after {
+    content: "\25b6";
+    position: absolute;
+    right: -50px;
+    -webkit-animation: leftRight 2s linear infinite reverse;
+    animation: leftRight 2s linear infinite reverse;
+}
+
+@-webkit-keyframes leftRight {
+    0% {
+        -webkit-transform: translateX(0)
+    }
+
+    25% {
+        -webkit-transform: translateX(-10px)
+    }
+
+    75% {
+        -webkit-transform: translateX(10px)
+    }
+
+    100% {
+        -webkit-transform: translateX(0)
+    }
+}
+
+@keyframes leftRight {
+    0% {
+        transform: translateX(0)
+    }
+
+    25% {
+        transform: translateX(-10px)
+    }
+
+    75% {
+        transform: translateX(10px)
+    }
+
+    100% {
+        transform: translateX(0)
+    }
+}
+
+.btn_container {
+    margin-left : 220px;
+    margin-bottom : 20px;
+    margin-top : -90px;
+    display : flex;
+}
+
+.all_btn {
+    border : none;
+    background-color: transparent;
+    font-size : 30px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top : 50px;
+    color : gray;
+}
+
+.all_btn:hover {
+    color : #E04B5A;
+}
+
+.all_btn:active {
+    color : #E04B5A;
+}
+
+.all_btn:visited {
+    color : #E04B5A;
+}
+
+.detected_btn {
+    border: none;
+    background-color: transparent;
+    font-size: 30px;
+    font-weight: bold;
+    margin-left : 20px;
+    margin-top : 50px;
+    cursor: pointer;
+        color: gray;
+}
+
+.detected_btn:hover {
+    color: #E04B5A;
+}
+
+.detected_btn:active {
+    color: #E04B5A;
+}
+
+.detected_btn:visited {
+    color : #E04B5A;
+}
+
+.add_container {
+    display: flex;
+    margin-left : 40px;
+    margin-bottom : -0px;
+    width : 1200px;
+}
+
+.search_container {
+    border: 2px solid coral;
+    margin-top : 20px;
+    margin-left : 1600px;
+}
+
+.add_input {
+
+    margin-left: 700px;
+    margin-top : 50px;
+    height: 40px;
+    border: 2px solid gray;
+    border-radius : 5px;
+    text-align: center;
+    outline : none;
+}
+
+.add_btn {
+    margin-top : 40px;
+    width: 30px;
+    background-color: transparent;
+    line-height: 10px;
+    border : none;
+    margin-right : 70px;
+    cursor: pointer;
+    margin-left : 30px;
+}
+
+.add_logo {
+    margin-top: 6px;
+    width: 30px;
+    transform: scale(1.4);
+}
+
+.add_logo:hover {
+    transform: scale(2);
+    border-radius: 50px;
+}
+
+.search_input {
+    height: 40px;
+    border: 2px solid gray;
+    border-radius: 5px;
+    text-align: center;
+    outline: none;
+    margin-top : 50px;
+    cursor : text;    
+}
+
+.search_btn {
+    margin-top: 40px;
+    width: 30px;
+    background-color: transparent;
+    line-height: 10px;
+    border: none;
+    margin-left: 30px;
+    cursor: pointer;
+}
+
+.search_logo {
+    margin-top: 3px;
+    width: 20px;
+    transform: scale(1.4);
+    margin-left : 5px;
+}
+
+.search_logo:hover {
+    transform: scale(2);
+    border-radius: 25px;
+}
+
+.delete_btn {
+    width : 30px;
+    background-color: transparent;
+    border : none;
+}
+
+.delete_logo {
+    width : 20px;
+    cursor : pointer;
+}
+
+.delete_logo:hover {
+    transform: scale(1.4);
+}
+
+.detail_btn {
+    width : 30px;
+    background-color: transparent;
+    border : none;
+}
+
+.detail_logo {
+    width : 20px;
+    cursor : pointer;
+}
+
+.detail_logo:hover {
+    transform: scale(1.4);
+}
+
+.cmt_btn {
+    width: 30px;
+    background-color: transparent;
+    border : none;
+}
+
+.cmt_logo {
+    width : 20px;
+    cursor : pointer;
+}
+
+.cmt_logo:hover {
+    transform: scale(1.4);
+}
+
+
+
+
+.lf_score {
+    font-weight : bolder;
+    font-size : 20px;
+}
+
+.logout_btn {
+    padding : 10px;
+    width : 30px;
+    text-align: center;
+    background: rgb(255, 255, 255, 0.5);
+    border-radius: 50px;
+    margin-left : 260px;
+    margin-top : -30px;
+    box-shadow: 1px 1px 1px 1px gray;
+}
+
+.logout_btn:hover {
+    transform : scale(1.1);
+    background: #fff;
+    
+}
+
+.logout_btn a {
+    text-decoration: none;
+    color : #fff;
+}
+
+.profile {
+    width : 40px;
+    margin-left : -150px;
+    margin-bottom : -10px;
+}
+
+.pagination {
+    display: flex;
+    text-align: center;
+    font-size : 20px;
+    height : 60px;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.page_num {
+    display: flex;
+    text-decoration: none;
+    text-align: center;
+    width : 30px;
+    height : 30px;
+    color : #000;
+}
+
+.page_num:hover {
+    color : #BDD7EE;
+}
+
+.page_num_strong {
+    display: flex;
+    text-decoration: none;
+    text-align: center;
+    width : 30px;
+    height : 30px;
+    color : #BDD7EE;
+}
+

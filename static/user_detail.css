@@ -10,6 +10,8 @@
  * Copyright 2011-2022 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
+
+
 :root {
   --bs-blue: #7193f0;
   --bs-indigo: #6610f2;
@@ -704,12 +706,18 @@ progress {
 }
 
 .profile {
-  height: 250px;
+  height: 545px;
 }
 
 .scorebox { 
   height: 150px;
 }
+
+.display-nb {
+  float: right;
+  margin-right: 10px;
+}
+
 
 .col {
   flex: 1 0 0%;
@@ -1497,7 +1505,7 @@ progress {
   }
   .col-xl-9 {
     flex: 0 0 auto;
-    width: 72.6%;
+    width: 69%;
   }
   .col-xl-10 {
     flex: 0 0 auto;
@@ -7713,8 +7721,8 @@ textarea.form-control-lg {
 .mb-4 { 
   margin-top: 19rem !important;
   margin-bottom: -31rem !important;
-  margin-left: 2rem !important;
-  margin-right: 1rem !important;
+  margin-left: 5rem !important;
+  margin-right: -5rem !important;
  
 }
 
@@ -7723,7 +7731,7 @@ textarea.form-control-lg {
 }
 
 .mb-6 {
-  margin-left: 2rem !important;
+  margin-left: 5rem !important;
   margin-right: 2rem !important;
   margin-bottom: 2.5rem !important;
 }
@@ -7733,9 +7741,9 @@ textarea.form-control-lg {
 }
 
 .mb-8{
-  margin-left: 10rem !important;
-  margin-right: -13rem !important;
-  margin-top: 16rem !important;
+  margin-left: 7rem !important;
+  margin-right: -12rem !important;
+  margin-top: 19rem !important;
   margin-bottom: -50rem !important;
 }
 
@@ -11300,34 +11308,26 @@ body {
   border-radius: 0.375rem !important;
 }
 
-.tg {
-  border-collapse: collapse;
-  border-spacing: 0;
+.tb {
+  border-collapse:collapse;border-color:#ccc;border-spacing:0;border-style:solid;border-width:1px;
 }
 
-.tg td {
-  border-color: black;
-  border-style: solid;
-  border-width: 1px;
-  overflow: hidden;
-  padding: 10px 5px;
-  word-break: normal;
+.tb td {
+  background-color:#fff;border-color:#ccc;border-style:solid;border-width:0px;color:#333;
+  font-family:Arial, sans-serif;font-size:17px;overflow:hidden;padding:10px 10px;word-break:normal;
 }
 
-.tg th {
-  border-color: black;
-  border-style: solid;
-  border-width: 1px;
-  font-weight: normal;
-  overflow: hidden;
-  padding: 10px 5px;
-  word-break: normal;
+.tb th {
+  background-color:#f0f0f0;border-color:#ccc;border-style:solid;border-width:0px;color:#333;
+  font-family:Arial, sans-serif;font-size:18px;font-weight:normal;overflow:hidden;padding:10px 10px;word-break:normal;
 }
 
-.tg .tg-o40d {
-  border-color: #9b9b9b;
-  text-align: center;
-  vertical-align: top
+.tb .tb-o40d {
+  border-color:#343434;color:#343434;font-weight:bold;text-align:center;vertical-align:middle
+}
+
+.tb .tb-qthw {
+  background-color:#f9f9f9;border-color:#343434;color:#343434;font-weight:bold;text-align:center;vertical-align:middle
 }
 
 .tg  {
@@ -11336,7 +11336,8 @@ body {
 
 .tg td {
   background-color:#fff;border-color:#ccc;border-style:solid;border-width:0px;color:#333;
-  font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 10px;word-break:normal;}
+  font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 10px;word-break:normal;
+}
 
 .tg th {
   background-color:#f0f0f0;border-color:#ccc;border-style:solid;border-width:0px;color:#333;
