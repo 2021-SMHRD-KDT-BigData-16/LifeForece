@@ -93,14 +93,13 @@ async def read_cases(request: Request,user: str = Query(...), page: int = 1, row
 
 # ------환자 한명 자세히보기-----------------------------
 @app.get("/cases/{case_id}", response_class=HTMLResponse)
-async def read_case(request: Request, user_name:str, p_name:str, case_id: int,  page: int = 1, rows_per_page: int = 10):
+async def read_case(request: Request, user_name:str, case_id: int, page: int = 1, rows_per_page: int = 10):
     
     context = {}    
     # 환자 아이디와 LF 점수 를 담기 위해서 하나 선택해오기
     case = session.query(CaseTable).filter(CaseTable.p_id == case_id).first()
     context['case'] = case
     context['user'] = user_name
-    context['name'] = p_name
 
     # 환자 한명의 바이탈 정보 담기
     vitals_query = session.query(CaseVital).filter(CaseVital.p_id == case_id)

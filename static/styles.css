@@ -692,7 +692,7 @@ progress {
 }
 
 .row1 {
-  width: 100%;
+  width: auto;
   height: auto;
   --bs-gutter-x: 1.5rem;
   --bs-gutter-y: 0;
@@ -700,11 +700,11 @@ progress {
     flex-wrap: wrap;
     margin-top: calc(-3 * var(--bs-gutter-y));
     margin-left: calc(-1.5 * var(--bs-gutter-x));
-    margin-right: calc(-2 * var(--bs-gutter-x));
+    margin-right: calc(-10 * var(--bs-gutter-x));
 }
 
 .profile {
-  height: 250px;
+  height: 580px;
 }
 
 .scorebox { 
@@ -1472,7 +1472,7 @@ progress {
   }
   .col-xl-3 {
     flex: 0 0 auto;
-    width: 22%;
+    width: 20%;
   }
   .col-xl-4 {
     flex: 0 0 auto;
@@ -1493,11 +1493,11 @@ progress {
   }
   .col-xl-8 {
     flex: 0 0 auto;
-    width: 64%;
+    width: 66.66666667%;
   }
   .col-xl-9 {
     flex: 0 0 auto;
-    width: 72.6%;
+    width: 75%;
   }
   .col-xl-10 {
     flex: 0 0 auto;
@@ -7714,7 +7714,7 @@ textarea.form-control-lg {
   margin-top: 19rem !important;
   margin-bottom: -31rem !important;
   margin-left: 2rem !important;
-  margin-right: 1rem !important;
+  margin-right: -0.5rem !important;
  
 }
 
@@ -7733,10 +7733,10 @@ textarea.form-control-lg {
 }
 
 .mb-8{
-  margin-left: 10rem !important;
-  margin-right: -13rem !important;
-  margin-top: 16rem !important;
-  margin-bottom: -50rem !important;
+  margin-left: 30rem !important;
+  margin-right: -28rem !important;
+  margin-top: 19rem !important;
+  margin-bottom: -40rem !important;
 }
 
 
