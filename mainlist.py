@@ -65,11 +65,13 @@ async def search_case_by_id(request: Request, p_id: int):
 
 # ----------casetable에 있는 환자 점수 목록 가져오기------------
 @app.get("/cases", response_class=HTMLResponse)
-async def read_cases(request: Request,user: str = Query(...), page: int = 1, rows_per_page: int = 10):
+async def read_cases(request: Request, user: str = Query(...), page: int = 1, rows_per_page: int = 10, p_id: int = None):
     
     context = {}  
     # 환자목록 불러오기         
     cases_query = session.query(CaseTable) 
+    #if p_id is not None:
+    #    cases_query = cases_query.filter_by(p_id=p_id)
     
     # 페이징처리하기
     start_index = (page - 1) * rows_per_page
@@ -93,13 +95,14 @@ async def read_cases(request: Request,user: str = Query(...), page: int = 1, row
 
 # ------환자 한명 자세히보기-----------------------------
 @app.get("/cases/{case_id}", response_class=HTMLResponse)
-async def read_case(request: Request, user_name:str, case_id: int, page: int = 1, rows_per_page: int = 10):
+async def read_case(request: Request, user_name:str, p_name:str, case_id: int,  page: int = 1, rows_per_page: int = 10):
     
     context = {}    
     # 환자 아이디와 LF 점수 를 담기 위해서 하나 선택해오기
     case = session.query(CaseTable).filter(CaseTable.p_id == case_id).first()
     context['case'] = case
     context['user'] = user_name
+    context['name'] = p_name
 
     # 환자 한명의 바이탈 정보 담기
     vitals_query = session.query(CaseVital).filter(CaseVital.p_id == case_id)
@@ -109,8 +112,8 @@ async def read_case(request: Request, user_name:str, case_id: int, page: int = 1
     end_index = start_index + rows_per_page   
     total_rows = vitals_query.count()    
     total_pages = (total_rows + rows_per_page - 1) // rows_per_page
-    vitals = vitals_query.offset(
-        (page - 1) * rows_per_page).limit(rows_per_page).all()
+    #vitals = vitals_query.offset((page - 1) * rows_per_page).limit(rows_per_page).all()
+    vitals = vitals_query.slice(start_index, end_index).all()
     
     # html에 보내기
     context['vitals'] = vitals    
@@ -120,7 +123,9 @@ async def read_case(request: Request, user_name:str, case_id: int, page: int = 1
     context['total_pages'] = total_pages
     session.close()
 
+    
     return templates.TemplateResponse("user_detail.html", context)
+    
 
 
 #------------ 환자 추가하기-------------------------
