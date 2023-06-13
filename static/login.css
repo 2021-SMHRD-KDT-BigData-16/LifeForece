@@ -108,7 +108,7 @@ body{
     width : 75%;
     height: 550px;
     margin-top : 20px;
-    background: rgba(36, 35, 35, 0.5);; 
+    background: rgba(189, 215, 238, 0.5); 
     filter: blur(.1s);
     background-position : center;
     background-size :cover ;
@@ -126,6 +126,7 @@ body{
     display : flex;
     justify-content: space-between;
     flex-direction : column;
+    border-radius : 25px;
 }
 
 .item .logo{
@@ -133,6 +134,11 @@ body{
     font-size: 30px;
 
 }
+
+.text-item {
+    margin-top : -60px;
+}
+
 .text-item h2 {
     font-size : 40px;
     line-height: 1;
@@ -253,14 +259,14 @@ body{
 }
 
 .btn {
-    background: #fff;
+    /*background: #fff;*/
     width : 100%;
     height : 45px;
     outline : none;
     border : none;
     border-radius : 4px;
     cursor : pointer;
-    background: #E04B5A;
+    background: #BDD7EE;
     font-size : 16px;
     color : #fff;
     box-shadow: rgba(0,0,0,4);
