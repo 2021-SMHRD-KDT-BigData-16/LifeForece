@@ -107,7 +107,11 @@ var myLineChart2 = new Chart(RR, {
         ticks: {
           min: 15,
           max: 30,
+<<<<<<< HEAD
           maxTicksLimit: 10
+=======
+          maxTicksLimit: 15
+>>>>>>> 497adf2386d22d590f56b65a611042894c6ae55a
         },
         gridLines: {
           color: "rgba(0, 0, 0, .125)",
@@ -154,8 +158,13 @@ var myLineChart3 = new Chart(HR, {
       }],
       yAxes: [{
         ticks: {
+<<<<<<< HEAD
           min: 40,
           max: 120,
+=======
+          min: 70,
+          max: 130,
+>>>>>>> 497adf2386d22d590f56b65a611042894c6ae55a
           maxTicksLimit: 10
         },
         gridLines: {

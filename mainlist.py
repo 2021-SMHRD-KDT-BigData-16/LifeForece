@@ -68,10 +68,16 @@ async def read_cases(request: Request, user: str = Query(...), page: int = 1, ro
     
     context = {}  
     # 환자목록 불러오기         
+<<<<<<< HEAD
     cases_query = session.query(CaseTable)
     # 검색할 시 쿼리 하나 보내기
     if p_id is not None:
         cases_query = cases_query.filter_by(p_id=p_id)
+=======
+    cases_query = session.query(CaseTable) 
+    #if p_id is not None:
+    #    cases_query = cases_query.filter_by(p_id=p_id)
+>>>>>>> 497adf2386d22d590f56b65a611042894c6ae55a
     
     # 페이징처리하기
     start_index = (page - 1) * rows_per_page
@@ -126,6 +132,10 @@ async def read_case(request: Request, user_name:str, p_name:str, case_id: int,  
     
     return templates.TemplateResponse("user_detail.html", context)
     
+<<<<<<< HEAD
+=======
+
+>>>>>>> 497adf2386d22d590f56b65a611042894c6ae55a
 
 #------------ 환자 추가하기-------------------------
 class MyData(BaseModel):
